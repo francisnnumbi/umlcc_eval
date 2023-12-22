@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:umlcc_eval/api/api.dart';
+import 'package:umlcc_eval/main.dart';
 
 import '../models/user.dart';
 import '../ui/auth/verify/verify_page.dart';
@@ -22,6 +23,7 @@ class AuthController extends GetxController {
 
   final cookies = <Cookie>[].obs;
   final otp = ''.obs;
+  final x_did = ''.obs;
 
   bool get isLogged => false;
 
@@ -92,8 +94,7 @@ class AuthController extends GetxController {
     ApiProvider.api
         .verify(
       data,
-      xDid:
-          cookies.where((element) => element.name == 'X-AU30').first.toString(),
+      xDid: x_did.value,
       identity: user.value!.identity,
     )
         .then((response) {
@@ -135,7 +136,13 @@ class AuthController extends GetxController {
       printInfo(info: datum.toString());
     }*/
 
-    ApiProvider.api.login(datum).then((response) {
+    ApiProvider.api
+        .login(
+      datum,
+      xDid: x_did.value,
+      identity: user.value!.identity,
+    )
+        .then((response) {
       if (response.statusCode == 200) {
         final data = response.data;
         if (kDebugMode) {
@@ -171,5 +178,19 @@ class AuthController extends GetxController {
     }).onError((error, stackTrace) {
       printError(info: error.toString());
     });
+  }
+
+  retrieveDeviceInfo() async {
+    final devInfo = await deviceInfoPlugin.deviceInfo;
+    x_did.value = devInfo.data['id'].toString();
+    if (kDebugMode) {
+      printInfo(info: devInfo.data.toString());
+    }
+  }
+
+  @override
+  void onInit() {
+    super.onInit();
+    retrieveDeviceInfo();
   }
 }

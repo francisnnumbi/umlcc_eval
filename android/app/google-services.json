@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "204373514728",
+    "project_id": "recruitment-test-8e95c",
+    "storage_bucket": "recruitment-test-8e95c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:204373514728:android:1401f16a6876d649a72c5d",
+        "android_client_info": {
+          "package_name": "com.francis.umlcc_eval"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCvWn7ygul_bzhQVyDckw9qdVhPpIL5MHY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

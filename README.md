@@ -65,14 +65,16 @@ These go in the header of the request:
 - [X]  The `code` field is the verification code sent to the user's phone number, or `otp`.
 - [X]  The `type` field is the type of user. It can be either `individual` or `company`.
 - [X]  The `token` field is the token received after a successful login.
-- [X]  The `X-DID` field is the cookie sent with the request.
+- [X]  The `X-DID` field is the device identity to be sent with the request.
 - [X]  The `Accept` field is the header sent with the request stating the type of data that is expected to be received.
 - [X]  The `Authorization` field is the header sent with the request.
 - [X]  The `Bearer`is the type of authorization attached as value of `Authorization` and is concatenated with
   the `token`.
+- [X]  The `fcm_token` is the firebase token. This means that the app should authenticate with firebase.
 - [X]  The `me` endpoint returns a `200` status code if the user is logged in and a `401` status code if the user is not
   logged in.
-- [X]  The `register` endpoint returns a `201` status code if the user is successfully registered and a `400` status code
+- [X]  The `register` endpoint returns a `201` status code if the user is successfully registered and a `400` status
+  code
   if the user is not successfully registered.
 - [X]  The `login` endpoint returns a `200` status code if the user is successfully logged in and a `400` status code if
   the user is not successfully logged in.
@@ -91,7 +93,7 @@ These go in the header of the request:
 
 - [ ]  The `X-AU30` cookie was received with the response, but is not related to any expected cookie.
 - [ ]  The `ensurance_session` cookie was received with the response, but is not related to any expected cookie.
-- [X]  The `X-DID` was not received with the response.
+- [X]  The `X-DID` was not received with the response. [SOLVED]
 - [X]  The `token` was not received with the response.
 
 #### Verify
@@ -119,6 +121,8 @@ It's also possible that some instructions are missing in the task too.
 
 ## Libraries Used
 
+- [x] [Device Info Plus](https://pub.dev/packages/device_info_plus) : A powerful device information library for Dart,
+  which supports getting device information.
 - [X]  [Dio](https://pub.dev/packages/dio) : A powerful Http client for Dart, which supports Interceptors, FormData,
   Request Cancellation, File Downloading, Timeout etc.
 - [X]  [Dio Cookie Manager](https://pub.dev/packages/dio_cookie_manager) : A cookie manager for Dio, which supports

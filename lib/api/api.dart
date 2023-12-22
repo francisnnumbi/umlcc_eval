@@ -15,11 +15,13 @@ class ApiProvider {
       );
 
   // Login
-  Future<Response> login(Map<String, dynamic> data) => DIO.post(
+  Future<Response> login(Map<String, dynamic> data,
+          {required String xDid, required String identity}) =>
+      DIO.post(
         EndPoint.loginUrl,
         queryParameters: data,
         options: Options(
-          headers: EndPoint.headers(),
+          headers: EndPoint.headers(xDid: xDid, identity: identity),
         ),
       );
 
