@@ -4,6 +4,15 @@ import 'package:umlcc_eval/main.dart';
 
 import '../configs/constants.dart';
 
+Future<void> handleBackgroundMessage(RemoteMessage message) async {
+  if (kDebugMode) {
+    print("message title: ${message.notification!.title}");
+    print("message body: ${message.notification!.body}");
+    print("message payload: ${message.data}");
+  }
+  // InnerStorage.write(kFCMToken, message.data['token']);
+}
+
 class FirebaseApi {
   final _firebaseMessaging = FirebaseMessaging.instance;
 
@@ -14,5 +23,7 @@ class FirebaseApi {
       print("FCMToken: $fcmToken");
     }
     InnerStorage.write(kFCMToken, fcmToken);
+
+    FirebaseMessaging.onBackgroundMessage(handleBackgroundMessage);
   }
 }

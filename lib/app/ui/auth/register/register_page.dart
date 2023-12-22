@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:umlcc_eval/app/controllers/auth_controller.dart';
 import 'package:umlcc_eval/app/ui/auth/login/login_page.dart';
 import 'package:umlcc_eval/app/ui/auth/verify/verify_page.dart';
+
+import '../../../services/auth_service.dart';
 
 class RegisterPage extends StatelessWidget {
   RegisterPage({super.key});
@@ -156,7 +157,7 @@ class RegisterPage extends StatelessWidget {
                                 "phone": _phoneController.text,
                                 "dial_code": _dialCodeController.text,
                               };
-                              AuthController.to.register(user);
+                              AuthService.to.register(user);
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.orange.shade900,

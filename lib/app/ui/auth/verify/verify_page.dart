@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:umlcc_eval/app/ui/auth/register/register_page.dart';
 
-import '../../../controllers/auth_controller.dart';
+import '../../../services/auth_service.dart';
 
 class VerifyPage extends StatelessWidget {
   VerifyPage({super.key}) {
     if (kDebugMode) {
-      _identityController.text = AuthController.to.user.value!.identity;
-      _phoneController.text = AuthController.to.user.value!.phone;
-      _otpController.text = AuthController.to.otp.value;
+      _identityController.text = AuthService.to.user.value!.identity.toString();
+      _phoneController.text = AuthService.to.user.value!.phone.toString();
+      _otpController.text = AuthService.to.otp.toString();
     }
   }
 
@@ -113,7 +113,7 @@ class VerifyPage extends StatelessWidget {
                                 "identity": _identityController.text,
                                 "otp": _otpController.text,
                               };
-                              AuthController.to.verify(user);
+                              AuthService.to.verify(user);
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.brown.shade900,

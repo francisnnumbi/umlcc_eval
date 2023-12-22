@@ -7,11 +7,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:umlcc_eval/app/controllers/auth_controller.dart';
+import 'package:umlcc_eval/app/controllers/data_controller.dart';
 import 'package:umlcc_eval/configs/constants.dart';
 import 'package:umlcc_eval/routes.dart';
 
 import 'api/firebase_api.dart';
+import 'app/services/auth_service.dart';
 import 'app/ui/home/home_page.dart';
 import 'firebase_options.dart';
 
@@ -28,11 +29,17 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await FirebaseApi().initNotifications();
+  await _initServices();
   runApp(MyApp());
 }
 
+Future<void> _initServices() async {
+  await AuthService.init();
+  await DataController.init();
+}
+
 Future<void> _initControllers() async {
-  await AuthController.init();
+  await DataController.init();
 }
 
 class MyApp extends StatelessWidget {

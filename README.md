@@ -91,17 +91,19 @@ These go in the header of the request:
 
 #### Register
 
-- [ ]  The `X-AU30` cookie was received with the response, but is not related to any expected cookie.
-- [ ]  The `ensurance_session` cookie was received with the response, but is not related to any expected cookie.
+- [ ]  The `X-AU30` cookie was received with the response, but is not related to any expected cookie. [SOLVED]
+- [ ]  The `ensurance_session` cookie was received with the response, but is not related to any expected
+  cookie. [SOLVED]
 - [X]  The `X-DID` was not received with the response. [SOLVED]
-- [X]  The `token` was not received with the response.
+- [X]  The `token` was not received with the response. [SOLVED]
 
 #### Verify
 
-- [ ]  The `fcm_token` field is required, but was not received with the previous response.
-- [ ]  The `ensurance_session` cookie was received with the response, but is not related to any expected cookie.
-- [X]  `422 Unprocessable Entity` status code was received with the Exception, thrown
-  by `RequestOptions.validateStatus`, `Client error - the request contains bad syntax or cannot be fulfilled`.
+- [ ]  The `fcm_token` field is required, but was not received with the previous response. [SOLVED]
+- [ ]  The `ensurance_session` cookie was received with the response, but is not related to any expected
+  cookie. [SOLVED]
+- [X]  `422 Unprocessable Entity` status code was received with the Exception, thrown [SOLVED]
+  by `RequestOptions.validateStatus`, `Client error - the request contains bad syntax or cannot be fulfilled`. [SOLVED]
 
 #### Login
 
@@ -121,6 +123,7 @@ It's also possible that some instructions are missing in the task too.
 
 ## Libraries Used
 
+- [x] [Firebase Messaging]
 - [x] [Device Info Plus](https://pub.dev/packages/device_info_plus) : A powerful device information library for Dart,
   which supports getting device information.
 - [X]  [Dio](https://pub.dev/packages/dio) : A powerful Http client for Dart, which supports Interceptors, FormData,
