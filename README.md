@@ -102,21 +102,24 @@ These go in the header of the request:
 - [ ]  The `fcm_token` field is required, but was not received with the previous response. [SOLVED]
 - [ ]  The `ensurance_session` cookie was received with the response, but is not related to any expected
   cookie. [SOLVED]
-- [X]  `422 Unprocessable Entity` status code was received with the Exception, thrown [SOLVED]
+- [X]  `422 Unprocessable Entity` status code was received with the Exception, thrown
   by `RequestOptions.validateStatus`, `Client error - the request contains bad syntax or cannot be fulfilled`. [SOLVED]
 
 #### Login
 
-- [ ]  The `ensurance_session` cookie was received with the response, but is not related to any expected cookie.
-- [X]  `403 Forbidden` status code was received with the Exception, thrown by `RequestOptions.validateStatus`.
+- [ ]  The `ensurance_session` cookie was received with the response, but is not related to any expected
+  cookie. [SOLVED]
+- [X]  `403 Forbidden` status code was received with the Exception, thrown by `RequestOptions.validateStatus`. [SOLVED]
 
 #### Me
 
-- [ ]  Not tested yet, as the login request is not working.
+- [X]  `401 Unauthorized` status code was received with the Exception, thrown
+  by `RequestOptions.validateStatus`. [SOLVED]
 
 #### Products
 
-- [ ]  Not tested yet, as the login request is not working.
+- [X]  `401 Unauthorized` status code was received with the Exception, thrown
+  by `RequestOptions.validateStatus`. [SOLVED]
 
 It seems that some terms are named differently in the task and in the code. And that some terms are missing in the task.
 It's also possible that some instructions are missing in the task too.

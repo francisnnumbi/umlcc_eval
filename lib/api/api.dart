@@ -45,10 +45,10 @@ class ApiProvider {
         EndPoint.productsUrl,
         options: Options(
           headers: EndPoint.headers(
-            xDid: InnerStorage.read(kFCMToken).toString(),
+            xDid: InnerStorage.read(kXDid).toString(),
             identity: InnerStorage.read(kIdentity).toString(),
             token:
-                '${InnerStorage.read(kTokenType)} ${InnerStorage.read(kAccessToken)}',
+                '${InnerStorage.read(kTokenType).toString()} ${InnerStorage.read(kAccessToken).toString()}',
           ),
         ),
       );

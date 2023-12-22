@@ -1,5 +1,3 @@
-
-
 class EndPoint {
   static const String baseUrl = 'https://umlcc.chd-staging.tech/api/app/';
 
@@ -23,11 +21,11 @@ class EndPoint {
       String? identity,
       String contentType = "application/json"}) {
     return {
-      "Authorization": token ?? "",
-      "X-DID": xDid ?? "",
-      "identity": identity ?? "",
-      "Content-Type": contentType,
-      "Accept": "application/json",
+      'Authorization': token ?? "",
+      'X-DID': xDid ?? "",
+      'identity': identity ?? "",
+      //'Content-Type': contentType,
+      'Accept': 'application/json',
     };
   }
 }

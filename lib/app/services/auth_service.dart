@@ -143,13 +143,13 @@ class AuthService extends GetxService {
 
   login(Map<String, dynamic> datum) async {
     ApiProvider.api.login(datum).then((response) async {
-      final List<String>? kks = response.headers[HttpHeaders.setCookieHeader];
+      /* final List<String>? kks = response.headers[HttpHeaders.setCookieHeader];
       cookies.clear();
       for (var element in kks!) {
         var c = Cookie.fromSetCookieValue(element);
         cookies.add(c);
         //    printInfo(info: "cookie :: ${c.name}");
-      }
+      }*/
       if (response.statusCode == 200) {
         final data = response.data;
         InnerStorage.write(kOtp, data[kOtp]);
@@ -194,11 +194,14 @@ class AuthService extends GetxService {
 
   Future<void> loadUserData() async {
     if (kDebugMode) {
-      printInfo(
-          info: "LOAD USER DATA IDENTITY :: ${InnerStorage.read(kIdentity)}");
+      // printInfo(
+      //     info: "LOAD USER DATA IDENTITY :: ${InnerStorage.read(kIdentity)}");
     }
-    ApiProvider.api.me().then((value) {
-      if (kDebugMode) printInfo(info: value.toString());
+    ApiProvider.api.me().then((response) {
+      if (kDebugMode) {
+        // printInfo(info: "LOGIN RESPONSE :: ${response.requestOptions.headers}");
+        printInfo(info: "LOGIN DATA :: ${response.data}");
+      }
     }).onError((error, stackTrace) {
       printError(info: "LOAD USER DATA :: $error");
     });
