@@ -1,5 +1,5 @@
 class User {
-  final int id;
+  int? id;
   final String firstName;
   final String lastName;
   final String identity;
@@ -8,7 +8,7 @@ class User {
   final String type;
 
   User({
-    required this.id,
+    this.id,
     required this.firstName,
     required this.lastName,
     required this.identity,

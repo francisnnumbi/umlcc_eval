@@ -17,18 +17,20 @@ class ApiProvider {
   // Login
   Future<Response> login(Map<String, dynamic> data) => DIO.post(
         EndPoint.loginUrl,
-        data: data,
+        queryParameters: data,
         options: Options(
           headers: EndPoint.headers(),
         ),
       );
 
   // Verify
-  Future<Response> verify(Map<String, dynamic> data) => DIO.post(
+  Future<Response> verify(Map<String, dynamic> data,
+          {required String xDid, required String identity}) =>
+      DIO.post(
         EndPoint.verifyUrl,
-        data: data,
+        queryParameters: data,
         options: Options(
-          headers: EndPoint.headers(),
+          headers: EndPoint.headers(xDid: xDid, identity: identity),
         ),
       );
 

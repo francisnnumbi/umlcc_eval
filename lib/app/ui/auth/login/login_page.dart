@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:umlcc_eval/app/ui/auth/register/register_page.dart';
@@ -5,7 +6,13 @@ import 'package:umlcc_eval/app/ui/auth/register/register_page.dart';
 import '../../../controllers/auth_controller.dart';
 
 class LoginPage extends StatelessWidget {
-  LoginPage({super.key});
+  LoginPage({super.key}) {
+    if (kDebugMode && AuthController.to.user.value != null) {
+      _identityController.text = AuthController.to.user.value!.identity;
+      _phoneController.text = AuthController.to.user.value!.phone;
+      _dialCodeController.text = AuthController.to.user.value!.dialCode;
+    }
+  }
 
   static const String route = "/auth/login";
 
