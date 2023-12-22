@@ -23,15 +23,14 @@ class AuthController extends GetxController {
   final cookies = <Cookie>[].obs;
   final otp = ''.obs;
 
-  //final Rxn(Cookie)
-
   bool get isLogged => false;
 
   register(Map<String, dynamic> datum) async {
     datum['type'] = 'individual';
     ApiProvider.api.register(datum).then((response) {
       if (kDebugMode) {
-        printInfo(info: response.toString());
+        printInfo(info: response.headers.toString());
+
         final List<String>? kks = response.headers[HttpHeaders.setCookieHeader];
         cookies.clear();
         for (var element in kks!) {
