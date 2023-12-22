@@ -29,7 +29,6 @@ class AuthController extends GetxController {
           var c = Cookie.fromSetCookieValue(element);
           printInfo(info: "HIHIH6 : ${c.name}");
         }
-        //printInfo(info: "HIHI : ${kks![1].toString()}");
       }
     }).onError((error, stackTrace) {
       printError(info: error.toString());
