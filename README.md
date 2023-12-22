@@ -66,7 +66,7 @@ is the token received after a successful login.
 
 ## Libraries Used
 
-- [x] [dio](https://pub.dev/packages/dio)
+- [x] [Dio](https://pub.dev/packages/dio)
 - [x] [GetX](https://pub.dev/packages/get)
 - [x] [GetStorage](https://pub.dev/packages/get_storage)
 
