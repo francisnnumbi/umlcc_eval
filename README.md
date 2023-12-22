@@ -6,11 +6,11 @@ A flutter project for evaluation
 
 Creating an application with the following points :
 
-- [x] A login page
-- [x] A registration page
-- [x] A verification page
-- [x] A home page with a list of products
-- [x] A me page
+- [X]  A login page
+- [X]  A registration page
+- [X]  A verification page
+- [X]  A home page with a list of products
+- [X]  A me or profile page
 
 ## Endpoints
 
@@ -18,92 +18,114 @@ These are stated in the app's `lib/api/endpoints.dart` file.
 
 ## Particularities of Requests
 
-Cookie should be sent inside the header of the request with the key `X-DID` and the value `Bearer $token` where `$token`
+Cookie should be sent inside the header of the request with the key `X-DID` and the `Authorization` with
+value `Bearer $token`
+where `$token`
 is the token received after a successful login.
-
-### Me Get Request :
-
-```"X-DID", 'Authorization':'Bearer $token'```
 
 ### Register Post Request :
 
-```("dial_code", "first_name", "last_name", "identity", "phone"), type = "individual"```
+These go in the body of the request:
 
-### Login Post Request :
-
-```("dial_code", "phone", "identity")```
+`dial_code`, `first_name`, `last_name`, `identity`, `phone`, `type="individual"`
 
 ### Verify Post Request :
 
-```("dial_code", "phone", "identity", "code")```
+these go in the body of the request:
+
+`dial_code`, `phone`, `identity`, `code`
+
+`code` is the verification code sent to the user's phone number, or `otp`.
+
+`):` At this point, user should be verified and logged in order to perform the next requests.
+
+### Login Post Request :
+
+These go in the body of the request:
+
+`dial_code`, `phone`, `identity`
+
+### Me Get Request :
+
+These go in the header of the request:
+
+`X-DID`, `Authorization:'Bearer $token'`, `Accept:'application/json'`
 
 ### Products Get Request :
 
-```"X-DID", 'Authorization':'Bearer $token', "Accept":"application/json"```
+These go in the header of the request:
+
+`X-DID`, `Authorization:'Bearer $token'`, `Accept:'application/json'`
 
 ## Points to Clarify
 
-- [x] The `identity` field is the email address of the user.
-- [x] The `dial_code` field is the country code of the user.
-- [x] The `phone` field is the phone number of the user.
-- [x] The `code` field is the verification code sent to the user's phone number, or `otp`.
-- [x] The `type` field is the type of user. It can be either `individual` or `company`.
-- [x] The `token` field is the token received after a successful login.
-- [x] The `X-DID` field is the cookie sent with the request.
-- [x] The `Accept` field is the header sent with the request stating the type of data that is expected to be received.
-- [x] The `Authorization` field is the header sent with the request.
-- [x] The `Bearer`is the type of authorization attached as value of `Authorization` and is concatenated with
+- [X]  The `identity` field is the email address of the user.
+- [X]  The `dial_code` field is the country code of the user.
+- [X]  The `phone` field is the phone number of the user.
+- [X]  The `code` field is the verification code sent to the user's phone number, or `otp`.
+- [X]  The `type` field is the type of user. It can be either `individual` or `company`.
+- [X]  The `token` field is the token received after a successful login.
+- [X]  The `X-DID` field is the cookie sent with the request.
+- [X]  The `Accept` field is the header sent with the request stating the type of data that is expected to be received.
+- [X]  The `Authorization` field is the header sent with the request.
+- [X]  The `Bearer`is the type of authorization attached as value of `Authorization` and is concatenated with
   the `token`.
-- [x] The `me` endpoint returns a `200` status code if the user is logged in and a `401` status code if the user is not
+- [X]  The `me` endpoint returns a `200` status code if the user is logged in and a `401` status code if the user is not
   logged in.
-- [x] The `register` endpoint returns a `201` status code if the user is successfully registered and a `400` status code
+- [X]  The `register` endpoint returns a `201` status code if the user is successfully registered and a `400` status code
   if the user is not successfully registered.
-- [x] The `login` endpoint returns a `200` status code if the user is successfully logged in and a `400` status code if
+- [X]  The `login` endpoint returns a `200` status code if the user is successfully logged in and a `400` status code if
   the user is not successfully logged in.
-- [x] The `verify` endpoint returns a `200` status code if the user is successfully verified and a `400` status code if
+- [X]  The `verify` endpoint returns a `200` status code if the user is successfully verified and a `400` status code if
   the user is not successfully verified.
-- [x] The `products` endpoint returns a `200` status code if the user is successfully logged in and a `401` status code
+- [X]  The `products` endpoint returns a `200` status code if the user is successfully logged in and a `401` status code
   if the user is not successfully logged in.
 
 ## Points to remember
 
-- [x] The cookie should be sent in the header.
+- [X]  The cookie should be sent in the header.
 
 ## Encountered Problems
 
-Register
+#### Register
 
-- [ ] The `X-AU30` cookie was received with the response, but is not related to any expected cookie.
-- [ ] The `ensurance_session` cookie was received with the response, but is not related to any expected cookie.
+- [ ]  The `X-AU30` cookie was received with the response, but is not related to any expected cookie.
+- [ ]  The `ensurance_session` cookie was received with the response, but is not related to any expected cookie.
+- [X]  The `X-DID` was not received with the response.
+- [X]  The `token` was not received with the response.
 
-- [x] The `X-DID` was not received with the response.
-- [x] The `token` was not received with the response.
+#### Verify
 
-Verify
-
-- [ ] The `fcm_token` field is required, but was not received with the previous response.
-
-- [ ] The `ensurance_session` cookie was received with the response, but is not related to any expected cookie.
-- [x] `422 Unprocessable Entity` status code was received with the Exception, thrown
+- [ ]  The `fcm_token` field is required, but was not received with the previous response.
+- [ ]  The `ensurance_session` cookie was received with the response, but is not related to any expected cookie.
+- [X]  `422 Unprocessable Entity` status code was received with the Exception, thrown
   by `RequestOptions.validateStatus`, `Client error - the request contains bad syntax or cannot be fulfilled`.
 
-Login
+#### Login
 
-- [ ] The `ensurance_session` cookie was received with the response, but is not related to any expected cookie.
-- [x] `403 Forbidden` status code was received with the Exception, thrown by `RequestOptions.validateStatus`.
+- [ ]  The `ensurance_session` cookie was received with the response, but is not related to any expected cookie.
+- [X]  `403 Forbidden` status code was received with the Exception, thrown by `RequestOptions.validateStatus`.
 
-Me
+#### Me
 
-- [ ] Not tested yet.
+- [ ]  Not tested yet, as the login request is not working.
 
-Products
+#### Products
 
-- [ ] Not tested yet.
+- [ ]  Not tested yet, as the login request is not working.
+
+It seems that some terms are named differently in the task and in the code. And that some terms are missing in the task.
+It's also possible that some instructions are missing in the task too.
 
 ## Libraries Used
 
-- [x] [Dio](https://pub.dev/packages/dio)
-- [x] [GetX](https://pub.dev/packages/get)
-- [x] [GetStorage](https://pub.dev/packages/get_storage)
-
-
+- [X]  [Dio](https://pub.dev/packages/dio) : A powerful Http client for Dart, which supports Interceptors, FormData,
+  Request Cancellation, File Downloading, Timeout etc.
+- [X]  [Dio Cookie Manager](https://pub.dev/packages/dio_cookie_manager) : A cookie manager for Dio, which supports
+  persistent cookies, session cookies, cookie storage etc.
+- [X]  [Cookie Jar](https://pub.dev/packages/cookie_jar) : A cookie manager for Dart, which supports persistent cookies,
+  session cookies, cookie storage etc.
+- [X]  [GetX](https://pub.dev/packages/get) : A powerful state management library for Dart, which supports Dependency
+  Injection, Routing and a lot more.
+- [X]  [GetStorage](https://pub.dev/packages/get_storage) : A powerful storage library for Dart, which supports
+  persistent storage.
