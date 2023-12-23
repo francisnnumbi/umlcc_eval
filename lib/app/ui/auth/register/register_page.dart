@@ -12,7 +12,6 @@ class RegisterPage extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
   final _firstNameController = TextEditingController();
   final _lastNameController = TextEditingController();
-  final _identityController = TextEditingController();
   final _phoneController = TextEditingController();
   final _dialCodeController = TextEditingController();
 
@@ -78,24 +77,6 @@ class RegisterPage extends StatelessWidget {
                           },
                         ),
                         const SizedBox(height: 10),
-                        TextFormField(
-                          controller: _identityController,
-                          decoration: const InputDecoration(
-                            labelText: 'Identity',
-                            filled: true,
-                            border: OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(20)),
-                            ),
-                          ),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter your identity';
-                            }
-                            return null;
-                          },
-                        ),
-                        const SizedBox(height: 10),
                         Row(
                           children: [
                             Expanded(
@@ -152,7 +133,6 @@ class RegisterPage extends StatelessWidget {
                               Map<String, dynamic> user = {
                                 "first_name": _firstNameController.text,
                                 "last_name": _lastNameController.text,
-                                "identity": _identityController.text,
                                 "phone": _phoneController.text,
                                 "dial_code": _dialCodeController.text,
                               };

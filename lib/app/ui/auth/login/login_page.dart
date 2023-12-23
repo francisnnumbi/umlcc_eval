@@ -8,7 +8,6 @@ import '../../../services/auth_service.dart';
 class LoginPage extends StatelessWidget {
   LoginPage({super.key}) {
     if (kDebugMode && AuthService.to.user.value != null) {
-      _identityController.text = AuthService.to.user.value!.identity;
       _phoneController.text = AuthService.to.user.value!.phone;
       _dialCodeController.text = AuthService.to.user.value!.dialCode;
     }
@@ -17,7 +16,6 @@ class LoginPage extends StatelessWidget {
   static const String route = "/auth/login";
 
   final _formKey = GlobalKey<FormState>();
-  final _identityController = TextEditingController();
   final _phoneController = TextEditingController();
   final _dialCodeController = TextEditingController();
 
@@ -47,24 +45,6 @@ class LoginPage extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 30),
-                        TextFormField(
-                          controller: _identityController,
-                          decoration: const InputDecoration(
-                            labelText: 'Identity',
-                            filled: true,
-                            border: OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(20)),
-                            ),
-                          ),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter your identity';
-                            }
-                            return null;
-                          },
-                        ),
-                        const SizedBox(height: 10),
                         Row(
                           children: [
                             Expanded(
@@ -119,7 +99,6 @@ class LoginPage extends StatelessWidget {
                               }
                               _formKey.currentState!.save();
                               Map<String, dynamic> user = {
-                                "identity": _identityController.text,
                                 "phone": _phoneController.text,
                                 "dial_code": _dialCodeController.text,
                               };

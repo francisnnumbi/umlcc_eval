@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -21,8 +19,6 @@ class AuthService extends GetxService {
 
   final Rxn<User> user = Rxn<User>();
 
-  final cookies = <Cookie>[].obs;
-
   //final x_did = ''.obs;
   final _loggedIn = false.obs;
 
@@ -30,24 +26,10 @@ class AuthService extends GetxService {
 
   String get otp => InnerStorage.read(kOtp).toString() ?? '';
 
-  String get cookiesString {
-    return cookies.join('; ')
-        //    .replaceAll(", ", "")
-        //  .replaceAll(" ", "")
-        //   .replaceAll("HttpOnly", "HttpOnly=false")
-        ;
-  }
-
   register(Map<String, dynamic> datum) async {
     datum['type'] = 'individual';
+    datum[kIdentity] = InnerStorage.read(kXDid).toString();
     ApiProvider.api.register(datum).then((response) {
-      final List<String>? kks = response.headers[HttpHeaders.setCookieHeader];
-      cookies.clear();
-      for (var element in kks!) {
-        var c = Cookie.fromSetCookieValue(element);
-        cookies.add(c);
-        //    printInfo(info: "cookie :: ${c.name}");
-      }
       if (response.statusCode == 201) {
         final data = response.data;
         InnerStorage.write(kOtp, data[kOtp].toString());
@@ -72,6 +54,7 @@ class AuthService extends GetxService {
   }
 
   login(Map<String, dynamic> datum) async {
+    datum[kIdentity] = InnerStorage.read(kXDid).toString();
     ApiProvider.api.login(datum).then((response) async {
       if (response.statusCode == 200) {
         final data = response.data;
@@ -93,19 +76,13 @@ class AuthService extends GetxService {
   }
 
   verify(Map<String, dynamic> datum) async {
-    datum['fcm_token'] = InnerStorage.read(kFCMToken);
+    datum['fcm_token'] = InnerStorage.read(kFCMToken).toString();
 
     if (kDebugMode) {
       printInfo(info: "VERIFICATION INITIATED :: $datum");
     }
 
     ApiProvider.api.verify(datum).then((response) {
-      final List<String>? kks = response.headers[HttpHeaders.setCookieHeader];
-      cookies.clear();
-      for (var element in kks!) {
-        var c = Cookie.fromSetCookieValue(element);
-        cookies.add(c);
-      }
       if (response.statusCode == 200) {
         final data = response.data;
         InnerStorage.write(kAccessToken, data[kAccessToken]);
@@ -143,7 +120,7 @@ class AuthService extends GetxService {
   }
 
   Future<void> loadUserData() async {
-    ApiProvider.api.me(cookiesString).then((response) {
+    ApiProvider.api.me().then((response) {
       if (kDebugMode) {
         // printInfo(info: "LOGIN RESPONSE :: ${response.requestOptions.headers}");
         printInfo(info: "LOAD USER DATA SUCCESS :: ${response.data}");
@@ -155,22 +132,17 @@ class AuthService extends GetxService {
     });
   }
 
-  retrieveDeviceInfo() async {
-    /*  if (Platform.isAndroid) {
+/*  retrieveDeviceInfo() async {
+    */ /*   if (Platform.isAndroid) {
       final dInfo = await deviceInfoPlugin.androidInfo;
       String di = dInfo.data['fingerprint'].toString();
       if (kDebugMode) printInfo(info: di);
     } else if (Platform.isIOS) {
       final dInfo = await deviceInfoPlugin.iosInfo;
       String di = dInfo.data.toString();
-    }*/
+    }*/ /*
     final devInfo = await deviceInfoPlugin.deviceInfo;
+    if (kDebugMode) printInfo(info: devInfo.data.toString());
     InnerStorage.write(kXDid, devInfo.data['id'].toString());
-  }
-
-  @override
-  void onInit() {
-    super.onInit();
-    retrieveDeviceInfo();
-  }
+  }*/
 }

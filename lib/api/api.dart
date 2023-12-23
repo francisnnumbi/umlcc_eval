@@ -1,6 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
-import 'package:get/utils.dart';
 import 'package:umlcc_eval/api/endpoints.dart';
 import 'package:umlcc_eval/configs/constants.dart';
 import 'package:umlcc_eval/main.dart';
@@ -23,47 +21,37 @@ class ApiProvider {
       );
 
   // Verify
-  Future<Response> verify(Map<String, dynamic> data) {
-    final h = EndPoint.headers(
-      xDid: InnerStorage.read(kXDid).toString(),
-      identity: InnerStorage.read(kIdentity).toString(),
-    );
-    if (kDebugMode) printInfo(info: "VERIFY HEADERS :: $h");
-    return DIO.post(
-      EndPoint.verifyUrl,
-      queryParameters: data,
-      options: Options(
-        headers: h,
-      ),
-    );
-  }
+  Future<Response> verify(Map<String, dynamic> data) => DIO.post(
+        EndPoint.verifyUrl,
+        queryParameters: data,
+        options: Options(
+          headers: EndPoint.headers(
+            xDid: InnerStorage.read(kXDid).toString(),
+            identity: InnerStorage.read(kIdentity).toString(),
+          ),
+        ),
+      );
 
 // Me
-  Future<Response> me(String cookies) {
-    final h = EndPoint.headers(
-      xDid: InnerStorage.read(kXDid).toString(),
-      token:
-          '${InnerStorage.read(kTokenType).toString()} ${InnerStorage.read(kAccessToken).toString()}',
-      cookies: cookies,
-    );
-    if (kDebugMode) printInfo(info: "ME HEADERS :: $h");
-    return DIO.get(
-      EndPoint.meUrl,
-      options: Options(
-        headers: h,
-      ),
-    );
-  }
+  Future<Response> me() => DIO.get(
+        EndPoint.meUrl,
+        options: Options(
+          headers: EndPoint.headers(
+            xDid: InnerStorage.read(kXDid).toString(),
+            token:
+                '${InnerStorage.read(kTokenType).toString()} ${InnerStorage.read(kAccessToken).toString()}',
+          ),
+        ),
+      );
 
   // Products
-  Future<Response> products(String cookies) => DIO.get(
+  Future<Response> products() => DIO.get(
         EndPoint.productsUrl,
         options: Options(
           headers: EndPoint.headers(
             xDid: InnerStorage.read(kXDid).toString(),
             token:
                 '${InnerStorage.read(kTokenType).toString()} ${InnerStorage.read(kAccessToken).toString()}',
-            cookies: cookies,
           ),
         ),
       );
