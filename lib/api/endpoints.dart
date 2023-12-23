@@ -17,7 +17,6 @@ class EndPoint {
   // Headers
   static Map<String, dynamic> headers({
     String? token,
-    String? xDid,
     String? identity,
   }) {
     Map<String, dynamic> h = {
@@ -27,12 +26,10 @@ class EndPoint {
     if (token != null) {
       h['Authorization'] = token;
     }
-    if (xDid != null) {
-      h['X-DID'] = xDid;
-    }
     if (identity != null) {
-      h['identity'] = identity;
+      h['X-DID'] = identity;
     }
+
     return h;
   }
 }

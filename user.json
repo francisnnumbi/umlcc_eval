@@ -1,0 +1,32 @@
+{
+  "data": {
+    "avatar": "",
+    "account_nr": 1005,
+    "name": "Mabungo Solo",
+    "first_name": "Mabungo",
+    "middle_name": null,
+    "last_name": "Solo",
+    "email": null,
+    "dial_code": 243,
+    "iso2": "cd",
+    "iso3": "cod",
+    "phone": 1000000025,
+    "dob": null,
+    "type": "individual",
+    "permissions": [],
+    "last_login_at": "2023-12-23T19:04:14.000000Z",
+    "login_count": 1,
+    "default_lang": "en",
+    "accounts": [
+      {
+        "avatar": "",
+        "account_nr": 1005,
+        "name": "Mabungo Solo",
+        "active": true,
+        "type": "individual"
+      }
+    ]
+  },
+  "message": "User retrieved successfully",
+  "status": 200
+}

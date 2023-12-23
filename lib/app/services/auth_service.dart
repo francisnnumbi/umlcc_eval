@@ -1,7 +1,7 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:umlcc_eval/api/api.dart';
+import 'package:umlcc_eval/app/ui/home/home_page.dart';
 import 'package:umlcc_eval/main.dart';
 
 import '../../configs/constants.dart';
@@ -24,11 +24,11 @@ class AuthService extends GetxService {
 
   bool get isLogged => _loggedIn.value;
 
-  String get otp => InnerStorage.read(kOtp).toString() ?? '';
+  String get otp => InnerStorage.read(kOtp).toString();
 
   register(Map<String, dynamic> datum) async {
     datum['type'] = 'individual';
-    datum[kIdentity] = InnerStorage.read(kXDid).toString();
+    datum[kIdentity] = InnerStorage.read(kIdentity).toString();
     ApiProvider.api.register(datum).then((response) {
       if (response.statusCode == 201) {
         final data = response.data;
@@ -54,7 +54,7 @@ class AuthService extends GetxService {
   }
 
   login(Map<String, dynamic> datum) async {
-    datum[kIdentity] = InnerStorage.read(kXDid).toString();
+    datum[kIdentity] = InnerStorage.read(kIdentity).toString();
     ApiProvider.api.login(datum).then((response) async {
       if (response.statusCode == 200) {
         final data = response.data;
@@ -78,10 +78,6 @@ class AuthService extends GetxService {
   verify(Map<String, dynamic> datum) async {
     datum['fcm_token'] = InnerStorage.read(kFCMToken).toString();
 
-    if (kDebugMode) {
-      printInfo(info: "VERIFICATION INITIATED :: $datum");
-    }
-
     ApiProvider.api.verify(datum).then((response) {
       if (response.statusCode == 200) {
         final data = response.data;
@@ -91,9 +87,8 @@ class AuthService extends GetxService {
         InnerStorage.write(kIdentity, datum[kIdentity].toString());
         InnerStorage.write(kPhone, datum[kPhone].toString());
 
-        // _loggedIn.value = true;
+        _loggedIn.value = true;
 
-        if (kDebugMode) printInfo(info: "VERIFICATION SUCCESS :: $data");
         loadUserData();
         Get.snackbar(
           "Verification successful",
@@ -102,7 +97,7 @@ class AuthService extends GetxService {
           backgroundColor: Colors.green.shade400,
           colorText: Colors.white,
         );
-        // Get.offNamed(VerifyPage.route);
+        Get.offNamed(HomePage.route);
       } else {
         _loggedIn.value = false;
         Get.snackbar(
@@ -121,28 +116,11 @@ class AuthService extends GetxService {
 
   Future<void> loadUserData() async {
     ApiProvider.api.me().then((response) {
-      if (kDebugMode) {
-        // printInfo(info: "LOGIN RESPONSE :: ${response.requestOptions.headers}");
-        printInfo(info: "LOAD USER DATA SUCCESS :: ${response.data}");
+      try {
+        user.value = User.fromJson(response.data['data']);
+      } catch (_) {
+        user.value = null;
       }
-    }).onError((error, stackTrace) {
-      if (kDebugMode) {
-        printError(info: "LOAD USER DATA EXCEPTION :: $error");
-      }
-    });
+    }).onError((error, stackTrace) {});
   }
-
-/*  retrieveDeviceInfo() async {
-    */ /*   if (Platform.isAndroid) {
-      final dInfo = await deviceInfoPlugin.androidInfo;
-      String di = dInfo.data['fingerprint'].toString();
-      if (kDebugMode) printInfo(info: di);
-    } else if (Platform.isIOS) {
-      final dInfo = await deviceInfoPlugin.iosInfo;
-      String di = dInfo.data.toString();
-    }*/ /*
-    final devInfo = await deviceInfoPlugin.deviceInfo;
-    if (kDebugMode) printInfo(info: devInfo.data.toString());
-    InnerStorage.write(kXDid, devInfo.data['id'].toString());
-  }*/
 }

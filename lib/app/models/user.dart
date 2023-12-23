@@ -1,48 +1,92 @@
+import 'account.dart';
+
 class User {
-  int? id;
-  final String firstName;
-  final String lastName;
-  final String identity;
-  final String phone;
-  final String dialCode;
-  final String type;
+  late final String? avatar;
+  late final String? accountNr;
+  late final String? firstName;
+  late final String? middleName;
+  late final String? lastName;
+  late final String? email;
+  late final String? dialCode;
+  late final String? iso2;
+  late final String? iso3;
+  late final String? phone;
+  late final String? dob;
+  late final String? type;
+  late final String? lastLoginAt;
+  late final String? loginCount;
+  late final String? defaultLang;
+  late List<Account>? accounts = [];
 
   User({
-    this.id,
-    required this.firstName,
-    required this.lastName,
-    required this.identity,
-    required this.phone,
-    required this.dialCode,
-    required this.type,
+    this.avatar,
+    this.accountNr,
+    this.firstName,
+    this.middleName,
+    this.lastName,
+    this.email,
+    this.dialCode,
+    this.iso2,
+    this.iso3,
+    this.phone,
+    this.dob,
+    this.type,
+    this.lastLoginAt,
+    this.loginCount,
+    this.defaultLang,
+    this.accounts,
   });
 
   factory User.fromJson(Map<String, dynamic> json) {
+    List<Account> acc = [];
+    if (json['accounts'] != null) {
+      json['accounts'].forEach((v) {
+        acc.add(Account.fromJson(v));
+      });
+    }
     return User(
-      id: json['id'],
-      firstName: json['first_name'],
-      lastName: json['last_name'],
-      identity: json['identity'],
-      phone: json['phone'],
-      dialCode: json['dial_code'],
-      type: json['type'],
+      avatar: json['avatar'].toString(),
+      accountNr: json['account_nr'].toString(),
+      firstName: json['first_name'].toString(),
+      middleName: json['middle_name'].toString(),
+      lastName: json['last_name'].toString(),
+      email: json['email'].toString(),
+      dialCode: json['dial_code'].toString(),
+      iso2: json['iso2'].toString(),
+      iso3: json['iso3'].toString(),
+      phone: json['phone'].toString(),
+      dob: json['dob'].toString(),
+      type: json['type'].toString(),
+      lastLoginAt: json['last_login_at'].toString(),
+      loginCount: json['login_count'].toString(),
+      defaultLang: json['default_lang'].toString(),
+      accounts: acc,
     );
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'first_name': firstName,
-      'last_name': lastName,
-      'identity': identity,
-      'phone': phone,
-      'dial_code': dialCode,
-      'type': type,
-    };
+    final data = <String, dynamic>{};
+    data['avatar'] = avatar;
+    data['account_nr'] = accountNr;
+    data['first_name'] = firstName;
+    data['middle_name'] = middleName;
+    data['last_name'] = lastName;
+    data['email'] = email;
+    data['dial_code'] = dialCode;
+    data['iso2'] = iso2;
+    data['iso3'] = iso3;
+    data['phone'] = phone;
+    data['dob'] = dob;
+    data['type'] = type;
+    data['last_login_at'] = lastLoginAt;
+    data['login_count'] = loginCount;
+    data['default_lang'] = defaultLang;
+    data['accounts'] = accounts?.map((v) => v.toJson()).toList();
+    return data;
   }
 
   @override
   String toString() {
-    return 'User{id: $id, firstName: $firstName, lastName: $lastName, identity: $identity, phone: $phone, dialCode: $dialCode, type: $type}';
+    return 'User{ avatar: $avatar, accountNr: $accountNr, firstName: $firstName, middleName: $middleName, lastName: $lastName, email: $email, dialCode: $dialCode, iso2: $iso2, iso3: $iso3, phone: $phone, dob: $dob, type: $type, lastLoginAt: $lastLoginAt, loginCount: $loginCount, defaultLang: $defaultLang, accounts: $accounts}';
   }
 }

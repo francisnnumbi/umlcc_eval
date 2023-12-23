@@ -3,7 +3,6 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -23,14 +22,14 @@ final GetStorage InnerStorage = GetStorage(kAppName);
 
 _retrieveDeviceInfo() async {
   final devInfo = await deviceInfoPlugin.deviceInfo;
-  if (kDebugMode) print(devInfo.data.toString());
-  InnerStorage.write(kXDid, devInfo.data['id'].toString());
+  // if (kDebugMode) print(devInfo.data.toString());
+  InnerStorage.write(kIdentity, devInfo.data['id'].toString());
 }
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   DIO.interceptors.add(CookieManager(CookieJar()));
-  DIO.interceptors.add(LogInterceptor(requestBody: true, responseBody: true));
+  //DIO.interceptors.add(LogInterceptor(requestBody: true, responseBody: true));
 
   await GetStorage.init(kAppName);
   await _retrieveDeviceInfo();

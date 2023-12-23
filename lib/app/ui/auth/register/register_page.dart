@@ -77,50 +77,40 @@ class RegisterPage extends StatelessWidget {
                           },
                         ),
                         const SizedBox(height: 10),
-                        Row(
-                          children: [
-                            Expanded(
-                              flex: 1,
-                              child: TextFormField(
-                                controller: _dialCodeController,
-                                decoration: const InputDecoration(
-                                  labelText: 'Dial Code',
-                                  filled: true,
-                                  border: OutlineInputBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(20)),
-                                  ),
-                                ),
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Please enter your dial code';
-                                  }
-                                  return null;
-                                },
-                              ),
+                        TextFormField(
+                          controller: _dialCodeController,
+                          decoration: const InputDecoration(
+                            labelText: 'Dial Code',
+                            filled: true,
+                            border: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20)),
                             ),
-                            const SizedBox(width: 10),
-                            Expanded(
-                              flex: 3,
-                              child: TextFormField(
-                                controller: _phoneController,
-                                decoration: const InputDecoration(
-                                  labelText: 'Phone',
-                                  filled: true,
-                                  border: OutlineInputBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(20)),
-                                  ),
-                                ),
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Please enter your phone';
-                                  }
-                                  return null;
-                                },
-                              ),
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your dial code';
+                            }
+                            return null;
+                          },
+                        ),
+                        const SizedBox(height: 10),
+                        TextFormField(
+                          controller: _phoneController,
+                          decoration: const InputDecoration(
+                            labelText: 'Phone',
+                            filled: true,
+                            border: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20)),
                             ),
-                          ],
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your phone';
+                            }
+                            return null;
+                          },
                         ),
                         const SizedBox(height: 10),
                         Center(

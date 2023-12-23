@@ -26,7 +26,6 @@ class ApiProvider {
         queryParameters: data,
         options: Options(
           headers: EndPoint.headers(
-            xDid: InnerStorage.read(kXDid).toString(),
             identity: InnerStorage.read(kIdentity).toString(),
           ),
         ),
@@ -37,7 +36,7 @@ class ApiProvider {
         EndPoint.meUrl,
         options: Options(
           headers: EndPoint.headers(
-            xDid: InnerStorage.read(kXDid).toString(),
+            identity: InnerStorage.read(kIdentity).toString(),
             token:
                 '${InnerStorage.read(kTokenType).toString()} ${InnerStorage.read(kAccessToken).toString()}',
           ),
@@ -49,7 +48,7 @@ class ApiProvider {
         EndPoint.productsUrl,
         options: Options(
           headers: EndPoint.headers(
-            xDid: InnerStorage.read(kXDid).toString(),
+            identity: InnerStorage.read(kIdentity).toString(),
             token:
                 '${InnerStorage.read(kTokenType).toString()} ${InnerStorage.read(kAccessToken).toString()}',
           ),
