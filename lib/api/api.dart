@@ -39,11 +39,12 @@ class ApiProvider {
   }
 
 // Me
-  Future<Response> me() {
+  Future<Response> me(String cookies) {
     final h = EndPoint.headers(
       xDid: InnerStorage.read(kXDid).toString(),
       token:
           '${InnerStorage.read(kTokenType).toString()} ${InnerStorage.read(kAccessToken).toString()}',
+      cookies: cookies,
     );
     if (kDebugMode) printInfo(info: "ME HEADERS :: $h");
     return DIO.get(
@@ -55,13 +56,14 @@ class ApiProvider {
   }
 
   // Products
-  Future<Response> products() => DIO.get(
+  Future<Response> products(String cookies) => DIO.get(
         EndPoint.productsUrl,
         options: Options(
           headers: EndPoint.headers(
             xDid: InnerStorage.read(kXDid).toString(),
             token:
                 '${InnerStorage.read(kTokenType).toString()} ${InnerStorage.read(kAccessToken).toString()}',
+            cookies: cookies,
           ),
         ),
       );

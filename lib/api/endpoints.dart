@@ -19,6 +19,7 @@ class EndPoint {
     String? token,
     String? xDid,
     String? identity,
+    String? cookies,
   }) {
     Map<String, dynamic> h = {
       'Content-Type': 'application/json',
@@ -32,6 +33,9 @@ class EndPoint {
     }
     if (identity != null) {
       h['identity'] = identity;
+    }
+    if (cookies != null) {
+      h['Cookie'] = cookies;
     }
     return h;
   }

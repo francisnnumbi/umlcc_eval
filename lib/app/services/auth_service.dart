@@ -30,6 +30,8 @@ class AuthService extends GetxService {
 
   String get otp => InnerStorage.read(kOtp).toString() ?? '';
 
+  String get cookiesString => cookies.join(';');
+
   register(Map<String, dynamic> datum) async {
     datum['type'] = 'individual';
     ApiProvider.api.register(datum).then((response) {
@@ -63,6 +65,27 @@ class AuthService extends GetxService {
     });
   }
 
+  login(Map<String, dynamic> datum) async {
+    ApiProvider.api.login(datum).then((response) async {
+      if (response.statusCode == 200) {
+        final data = response.data;
+        InnerStorage.write(kOtp, data[kOtp]);
+
+        await InnerStorage.write(kIdentity, datum[kIdentity].toString());
+        await InnerStorage.write(kPhone, datum[kPhone].toString());
+        await InnerStorage.write(kDialCode, datum[kDialCode].toString());
+
+        verify({
+          "phone": datum[kPhone].toString(),
+          "identity": datum[kIdentity].toString(),
+          "otp": data[kOtp].toString(),
+        });
+      }
+    }).onError((error, stackTrace) {
+      printError(info: error.toString());
+    });
+  }
+
   verify(Map<String, dynamic> datum) async {
     datum['fcm_token'] = InnerStorage.read(kFCMToken);
 
@@ -71,13 +94,12 @@ class AuthService extends GetxService {
     }
 
     ApiProvider.api.verify(datum).then((response) {
-      /*final List<String>? kks = response.headers[HttpHeaders.setCookieHeader];
+      final List<String>? kks = response.headers[HttpHeaders.setCookieHeader];
       cookies.clear();
       for (var element in kks!) {
         var c = Cookie.fromSetCookieValue(element);
         cookies.add(c);
-        //    printInfo(info: "cookie :: ${c.name}");
-      }*/
+      }
       if (response.statusCode == 200) {
         final data = response.data;
         InnerStorage.write(kAccessToken, data[kAccessToken]);
@@ -114,29 +136,8 @@ class AuthService extends GetxService {
     });
   }
 
-  login(Map<String, dynamic> datum) async {
-    ApiProvider.api.login(datum).then((response) async {
-      if (response.statusCode == 200) {
-        final data = response.data;
-        InnerStorage.write(kOtp, data[kOtp]);
-
-        await InnerStorage.write(kIdentity, datum[kIdentity].toString());
-        await InnerStorage.write(kPhone, datum[kPhone].toString());
-        await InnerStorage.write(kDialCode, datum[kDialCode].toString());
-
-        verify({
-          "phone": datum[kPhone].toString(),
-          "identity": datum[kIdentity].toString(),
-          "otp": data[kOtp].toString(),
-        });
-      }
-    }).onError((error, stackTrace) {
-      printError(info: error.toString());
-    });
-  }
-
   Future<void> loadUserData() async {
-    ApiProvider.api.me().then((response) {
+    ApiProvider.api.me(cookiesString).then((response) {
       if (kDebugMode) {
         // printInfo(info: "LOGIN RESPONSE :: ${response.requestOptions.headers}");
         printInfo(info: "LOAD USER DATA SUCCESS :: ${response.data}");
