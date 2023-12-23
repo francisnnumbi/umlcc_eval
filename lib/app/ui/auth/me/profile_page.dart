@@ -25,7 +25,7 @@ class _ProfilePageState extends State<ProfilePage> {
             icon: const Icon(Icons.logout),
             tooltip: "Logout",
             onPressed: () {
-              // Navigator.pushNamed(context, SettingsPage.route);
+              AuthService.to.logout();
             },
           ),
         ],

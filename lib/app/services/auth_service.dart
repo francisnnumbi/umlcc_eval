@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:umlcc_eval/api/api.dart';
@@ -120,21 +121,26 @@ class AuthService extends GetxService {
     final phone = InnerStorage.read(kPhone).toString();
     final dialCode = InnerStorage.read(kDialCode).toString();
 
-    if (identity.isEmpty || phone.isEmpty || dialCode.isEmpty) {
+    if (!InnerStorage.hasData(kPhone) || !InnerStorage.hasData(kDialCode)) {
+      if (kDebugMode) print('silent login failed');
       return;
+      //Get.offNamed(LoginPage.route);
+    } else {
+      if (kDebugMode) print('silent login');
+      login({
+        kIdentity: identity,
+        kPhone: phone,
+        kDialCode: dialCode,
+      });
     }
-
-    login({
-      kIdentity: identity,
-      kPhone: phone,
-      kDialCode: dialCode,
-    });
   }
 
   logout() {
-    InnerStorage.erase();
-    _loggedIn.value = false;
+    InnerStorage.remove(kPhone);
+    InnerStorage.remove(kDialCode);
     Get.offAllNamed(LoginPage.route);
+    _loggedIn.value = false;
+    user.value = null;
   }
 
   Future<void> loadUserData() async {

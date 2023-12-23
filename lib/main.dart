@@ -29,8 +29,7 @@ _retrieveDeviceInfo() async {
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   DIO.interceptors.add(CookieManager(CookieJar()));
-  //DIO.interceptors.add(LogInterceptor(requestBody: true, responseBody: true));
-
+  
   await GetStorage.init(kAppName);
   await _retrieveDeviceInfo();
   await Firebase.initializeApp(

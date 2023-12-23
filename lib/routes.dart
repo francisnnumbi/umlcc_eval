@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:umlcc_eval/app/middlewares/splash_middleware.dart';
 import 'package:umlcc_eval/app/ui/auth/login/login_page.dart';
 import 'package:umlcc_eval/app/ui/auth/me/profile_page.dart';
 import 'package:umlcc_eval/app/ui/auth/register/register_page.dart';
@@ -13,6 +14,9 @@ class Routes {
     GetPage(
       name: SplashPage.route,
       page: () => const SplashPage(),
+      middlewares: [
+        SplashMiddleware(priority: -2),
+      ],
     ),
     GetPage(
       name: LoginPage.route,
@@ -26,6 +30,7 @@ class Routes {
       name: HomePage.route,
       page: () => const HomePage(),
       middlewares: [
+        SplashMiddleware(priority: -2),
         AuthMiddleware(priority: -1),
       ],
     ),
@@ -33,6 +38,7 @@ class Routes {
       name: ProfilePage.route,
       page: () => const ProfilePage(),
       middlewares: [
+        SplashMiddleware(priority: -2),
         AuthMiddleware(priority: -1),
       ],
     ),
@@ -40,6 +46,7 @@ class Routes {
       name: DetailPage.route,
       page: () => const DetailPage(),
       middlewares: [
+        SplashMiddleware(priority: -2),
         AuthMiddleware(priority: -1),
       ],
     ),
