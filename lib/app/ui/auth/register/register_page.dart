@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:umlcc_eval/app/ui/auth/login/login_page.dart';
-import 'package:umlcc_eval/app/ui/auth/verify/verify_page.dart';
 
 import '../../../services/auth_service.dart';
 
@@ -20,7 +19,7 @@ class RegisterPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.orange.shade400,
+      backgroundColor: Colors.orange.shade100,
       body: SafeArea(
         child: Center(
           child: Column(
@@ -179,19 +178,6 @@ class RegisterPage extends StatelessWidget {
                                 Get.offNamed(LoginPage.route);
                               },
                               child: const Text("Login"),
-                            ),
-                          ],
-                        ),
-                        //const SizedBox(height: 10),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Text("You can verify?"),
-                            TextButton(
-                              onPressed: () {
-                                Get.offNamed(VerifyPage.route);
-                              },
-                              child: const Text("Verify"),
                             ),
                           ],
                         ),

@@ -15,17 +15,24 @@ class EndPoint {
   static const String productsUrl = '${baseUrl}products';
 
   // Headers
-  static Map<String, String> headers(
-      {String? token,
-      String? xDid,
-      String? identity,
-      String contentType = "application/json"}) {
-    return {
-      'Authorization': token ?? "",
-      'X-DID': xDid ?? "",
-      'identity': identity ?? "",
-      //'Content-Type': contentType,
+  static Map<String, dynamic> headers({
+    String? token,
+    String? xDid,
+    String? identity,
+  }) {
+    Map<String, dynamic> h = {
+      'Content-Type': 'application/json',
       'Accept': 'application/json',
     };
+    if (token != null) {
+      h['Authorization'] = token;
+    }
+    if (xDid != null) {
+      h['X-DID'] = xDid;
+    }
+    if (identity != null) {
+      h['identity'] = identity;
+    }
+    return h;
   }
 }

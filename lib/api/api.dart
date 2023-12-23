@@ -1,4 +1,6 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
+import 'package:get/utils.dart';
 import 'package:umlcc_eval/api/endpoints.dart';
 import 'package:umlcc_eval/configs/constants.dart';
 import 'package:umlcc_eval/main.dart';
@@ -21,24 +23,36 @@ class ApiProvider {
       );
 
   // Verify
-  Future<Response> verify(Map<String, dynamic> data) => DIO.post(
-        EndPoint.verifyUrl,
-        queryParameters: data,
-        options: Options(headers: EndPoint.headers()),
-      );
+  Future<Response> verify(Map<String, dynamic> data) {
+    final h = EndPoint.headers(
+      xDid: InnerStorage.read(kXDid).toString(),
+      identity: InnerStorage.read(kIdentity).toString(),
+    );
+    if (kDebugMode) printInfo(info: "VERIFY HEADERS :: $h");
+    return DIO.post(
+      EndPoint.verifyUrl,
+      queryParameters: data,
+      options: Options(
+        headers: h,
+      ),
+    );
+  }
 
 // Me
-  Future<Response> me() => DIO.get(
-        EndPoint.meUrl,
-        options: Options(
-          headers: EndPoint.headers(
-            xDid: InnerStorage.read(kXDid).toString(),
-            identity: InnerStorage.read(kIdentity).toString(),
-            token:
-                '${InnerStorage.read(kTokenType)} ${InnerStorage.read(kAccessToken)}',
-          ),
-        ),
-      );
+  Future<Response> me() {
+    final h = EndPoint.headers(
+      xDid: InnerStorage.read(kXDid).toString(),
+      token:
+          '${InnerStorage.read(kTokenType).toString()} ${InnerStorage.read(kAccessToken).toString()}',
+    );
+    if (kDebugMode) printInfo(info: "ME HEADERS :: $h");
+    return DIO.get(
+      EndPoint.meUrl,
+      options: Options(
+        headers: h,
+      ),
+    );
+  }
 
   // Products
   Future<Response> products() => DIO.get(
@@ -46,7 +60,6 @@ class ApiProvider {
         options: Options(
           headers: EndPoint.headers(
             xDid: InnerStorage.read(kXDid).toString(),
-            identity: InnerStorage.read(kIdentity).toString(),
             token:
                 '${InnerStorage.read(kTokenType).toString()} ${InnerStorage.read(kAccessToken).toString()}',
           ),

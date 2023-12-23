@@ -8,7 +8,6 @@ import 'package:umlcc_eval/main.dart';
 
 import '../../configs/constants.dart';
 import '../models/user.dart';
-import '../ui/auth/verify/verify_page.dart';
 
 class AuthService extends GetxService {
   // ------- static methods ------- //
@@ -25,8 +24,9 @@ class AuthService extends GetxService {
   final cookies = <Cookie>[].obs;
 
   //final x_did = ''.obs;
+  final _loggedIn = false.obs;
 
-  bool get isLogged => false;
+  bool get isLogged => _loggedIn.value;
 
   String get otp => InnerStorage.read(kOtp).toString() ?? '';
 
@@ -48,39 +48,15 @@ class AuthService extends GetxService {
         InnerStorage.write(kPhone, datum[kPhone].toString());
         InnerStorage.write(kDialCode, datum[kDialCode].toString());
 
-        user.value = User.fromJson(datum);
+        // user.value = User.fromJson(datum);
 
         printInfo(info: data.toString());
 
-        Get.snackbar(
-          "Registration successful",
-          data['message'] +
-              ". Please verify your account to continue. CODE: " +
-              data[kOtp].toString(),
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.green.shade400,
-          colorText: Colors.white,
-          duration: null,
-          // const Duration(seconds: 5),
-          isDismissible: true,
-          mainButton: TextButton(
-            onPressed: () {
-              Get.back();
-              Get.offNamed(VerifyPage.route);
-            },
-            style: TextButton.styleFrom(
-              backgroundColor: Colors.grey.shade900,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
-              ),
-            ),
-            child: const Text(
-              "OK",
-              style: TextStyle(color: Colors.white),
-            ),
-          ),
-        );
-        // Get.offNamed(VerifyPage.route);
+        verify({
+          "phone": datum[kPhone].toString(),
+          "identity": datum[kIdentity].toString(),
+          "otp": data[kOtp].toString(),
+        });
       }
     }).onError((error, stackTrace) {
       printError(info: error.toString());
@@ -91,59 +67,11 @@ class AuthService extends GetxService {
     datum['fcm_token'] = InnerStorage.read(kFCMToken);
 
     if (kDebugMode) {
-      printInfo(info: datum.toString());
+      printInfo(info: "VERIFICATION INITIATED :: $datum");
     }
 
     ApiProvider.api.verify(datum).then((response) {
-      final List<String>? kks = response.headers[HttpHeaders.setCookieHeader];
-      cookies.clear();
-      for (var element in kks!) {
-        var c = Cookie.fromSetCookieValue(element);
-        cookies.add(c);
-        //    printInfo(info: "cookie :: ${c.name}");
-      }
-      if (response.statusCode == 200) {
-        final data = response.data;
-        InnerStorage.write(kAccessToken, data[kAccessToken]);
-        InnerStorage.write(kTokenType, data[kTokenType]);
-
-        InnerStorage.write(kIdentity, datum[kIdentity].toString());
-        InnerStorage.write(kPhone, datum[kPhone].toString());
-
-        if (kDebugMode) printInfo(info: data.toString());
-        Get.snackbar(
-          "Verification successful",
-          data['message'],
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.green.shade400,
-          colorText: Colors.white,
-          isDismissible: true,
-          mainButton: TextButton(
-            onPressed: () {
-              Get.back();
-            },
-            style: TextButton.styleFrom(
-              backgroundColor: Colors.grey.shade900,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
-              ),
-            ),
-            child: const Text(
-              "OK",
-              style: TextStyle(color: Colors.white),
-            ),
-          ),
-        );
-        // Get.offNamed(VerifyPage.route);
-      }
-    }).onError((error, stackTrace) {
-      printError(info: error.toString());
-    });
-  }
-
-  login(Map<String, dynamic> datum) async {
-    ApiProvider.api.login(datum).then((response) async {
-      /* final List<String>? kks = response.headers[HttpHeaders.setCookieHeader];
+      /*final List<String>? kks = response.headers[HttpHeaders.setCookieHeader];
       cookies.clear();
       for (var element in kks!) {
         var c = Cookie.fromSetCookieValue(element);
@@ -152,40 +80,55 @@ class AuthService extends GetxService {
       }*/
       if (response.statusCode == 200) {
         final data = response.data;
+        InnerStorage.write(kAccessToken, data[kAccessToken]);
+        InnerStorage.write(kTokenType, data[kTokenType]);
+
+        InnerStorage.write(kIdentity, datum[kIdentity].toString());
+        InnerStorage.write(kPhone, datum[kPhone].toString());
+
+        // _loggedIn.value = true;
+
+        if (kDebugMode) printInfo(info: "VERIFICATION SUCCESS :: $data");
+        loadUserData();
+        Get.snackbar(
+          "Verification successful",
+          data['message'],
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.green.shade400,
+          colorText: Colors.white,
+        );
+        // Get.offNamed(VerifyPage.route);
+      } else {
+        _loggedIn.value = false;
+        Get.snackbar(
+          "Verification failed",
+          response.data['message'],
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red.shade400,
+          colorText: Colors.white,
+        );
+      }
+    }).onError((error, stackTrace) {
+      _loggedIn.value = false;
+      printError(info: error.toString());
+    });
+  }
+
+  login(Map<String, dynamic> datum) async {
+    ApiProvider.api.login(datum).then((response) async {
+      if (response.statusCode == 200) {
+        final data = response.data;
         InnerStorage.write(kOtp, data[kOtp]);
 
         await InnerStorage.write(kIdentity, datum[kIdentity].toString());
         await InnerStorage.write(kPhone, datum[kPhone].toString());
         await InnerStorage.write(kDialCode, datum[kDialCode].toString());
 
-        // DataController.to.loadProducts();
-        loadUserData();
-
-        Get.snackbar(
-          "Login successful",
-          data['message'] +
-              ". Please verify your account to continue. CODE: " +
-              data[kOtp].toString(),
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.green.shade400,
-          colorText: Colors.white,
-          isDismissible: true,
-          mainButton: TextButton(
-            onPressed: () {
-              Get.back();
-            },
-            style: TextButton.styleFrom(
-              backgroundColor: Colors.grey.shade900,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
-              ),
-            ),
-            child: const Text(
-              "OK",
-              style: TextStyle(color: Colors.white),
-            ),
-          ),
-        );
+        verify({
+          "phone": datum[kPhone].toString(),
+          "identity": datum[kIdentity].toString(),
+          "otp": data[kOtp].toString(),
+        });
       }
     }).onError((error, stackTrace) {
       printError(info: error.toString());
@@ -193,17 +136,15 @@ class AuthService extends GetxService {
   }
 
   Future<void> loadUserData() async {
-    if (kDebugMode) {
-      // printInfo(
-      //     info: "LOAD USER DATA IDENTITY :: ${InnerStorage.read(kIdentity)}");
-    }
     ApiProvider.api.me().then((response) {
       if (kDebugMode) {
         // printInfo(info: "LOGIN RESPONSE :: ${response.requestOptions.headers}");
-        printInfo(info: "LOGIN DATA :: ${response.data}");
+        printInfo(info: "LOAD USER DATA SUCCESS :: ${response.data}");
       }
     }).onError((error, stackTrace) {
-      printError(info: "LOAD USER DATA :: $error");
+      if (kDebugMode) {
+        printError(info: "LOAD USER DATA EXCEPTION :: $error");
+      }
     });
   }
 
