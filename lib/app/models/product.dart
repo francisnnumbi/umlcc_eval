@@ -36,10 +36,7 @@ class Product {
   }
 
   formatDescription() {
-    while (description != null && description!.contains("  ")) {
-      description!.trim().replaceAll("  ", ' ');
-    }
-    return description;
+    return description!.replaceAll(RegExp(r"\s+"), ' ');
   }
 
   @override

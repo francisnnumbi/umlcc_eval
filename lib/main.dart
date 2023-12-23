@@ -8,12 +8,12 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:umlcc_eval/app/controllers/data_controller.dart';
+import 'package:umlcc_eval/app/ui/splash/splash_page.dart';
 import 'package:umlcc_eval/configs/constants.dart';
 import 'package:umlcc_eval/routes.dart';
 
 import 'api/firebase_api.dart';
 import 'app/services/auth_service.dart';
-import 'app/ui/home/home_page.dart';
 import 'firebase_options.dart';
 
 final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
@@ -70,7 +70,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
         useMaterial3: true,
       ),
-      initialRoute: HomePage.route,
+      initialRoute: SplashPage.route,
       getPages: Routes.routes,
     );
   }

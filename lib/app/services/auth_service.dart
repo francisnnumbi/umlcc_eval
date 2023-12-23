@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:umlcc_eval/api/api.dart';
+import 'package:umlcc_eval/app/ui/auth/login/login_page.dart';
 import 'package:umlcc_eval/app/ui/home/home_page.dart';
 import 'package:umlcc_eval/main.dart';
 
@@ -114,6 +115,28 @@ class AuthService extends GetxService {
     });
   }
 
+  silentLogin() {
+    final identity = InnerStorage.read(kIdentity).toString();
+    final phone = InnerStorage.read(kPhone).toString();
+    final dialCode = InnerStorage.read(kDialCode).toString();
+
+    if (identity.isEmpty || phone.isEmpty || dialCode.isEmpty) {
+      return;
+    }
+
+    login({
+      kIdentity: identity,
+      kPhone: phone,
+      kDialCode: dialCode,
+    });
+  }
+
+  logout() {
+    InnerStorage.erase();
+    _loggedIn.value = false;
+    Get.offAllNamed(LoginPage.route);
+  }
+
   Future<void> loadUserData() async {
     ApiProvider.api.me().then((response) {
       try {
@@ -122,5 +145,11 @@ class AuthService extends GetxService {
         user.value = null;
       }
     }).onError((error, stackTrace) {});
+  }
+
+  @override
+  void onInit() {
+    super.onInit();
+    silentLogin();
   }
 }

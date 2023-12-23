@@ -51,7 +51,8 @@ class _HomePageState extends State<HomePage> {
                     },
                     title: Text(DataController.to.products.value![index].name!),
                     subtitle: Text(
-                      DataController.to.products.value![index].description
+                      DataController.to.products.value![index]
+                          .formatDescription()
                           .toString(),
                     ),
                   );
