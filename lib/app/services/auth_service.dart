@@ -30,7 +30,13 @@ class AuthService extends GetxService {
 
   String get otp => InnerStorage.read(kOtp).toString() ?? '';
 
-  String get cookiesString => cookies.join(';');
+  String get cookiesString {
+    return cookies.join('; ')
+        //    .replaceAll(", ", "")
+        //  .replaceAll(" ", "")
+        //   .replaceAll("HttpOnly", "HttpOnly=false")
+        ;
+  }
 
   register(Map<String, dynamic> datum) async {
     datum['type'] = 'individual';
