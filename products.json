@@ -1,0 +1,54 @@
+{
+  "data": [
+    {
+      "id": "01hj6hcs5cxmttkf4kwe5cv42w",
+      "name": "Vehicle Insurance",
+      "slug": "vehicle-insurance",
+      "description": "Vehicle Insurance: Financial protection for accidents, theft, and damages.\n                Legal requirement in many places. Peace of mind on the road. Tailored coverage options.",
+      "type": "individual",
+      "model": "vehicle-insurance"
+    },
+    {
+      "id": "01hj6hcs5kr4bvg2q7f6z11g1s",
+      "name": "Home Insurance",
+      "slug": "home-insurance",
+      "description": "Home Insurance: Protect your home and belongings. Peace of mind for unexpected events. Customizable coverage.",
+      "type": "individual",
+      "model": "home-insurance"
+    },
+    {
+      "id": "01hj6hcs5rj3nstzwnysjp34gq",
+      "name": "life Insurance",
+      "slug": "life-insurance",
+      "description": "Life Insurance: Financial safeguard for loved ones in case of your passing. Peace of mind. Tailored coverage options.",
+      "type": "individual",
+      "model": "life-insurance"
+    },
+    {
+      "id": "01hj6hcs5xjyvpt94xw5n31yhb",
+      "name": "Personal Accident",
+      "slug": "personal-accident",
+      "description": "Personal Accident Insurance: Financial protection for accidents, injuries,\n                and disabilities. Peace of mind in unforeseen circumstances. Customizable coverage.",
+      "type": "individual",
+      "model": "personal-accident"
+    },
+    {
+      "id": "01hj6hcs62t8w2jg34w4prmh79",
+      "name": "Vehicle Insurance",
+      "slug": "vehicle-insurance-1",
+      "description": "Vehicle Insurance: Financial protection for accidents, theft, and damages.\n                Legal requirement in many places. Peace of mind on the road. Tailored coverage options.",
+      "type": "business",
+      "model": "vehicle-insurance"
+    },
+    {
+      "id": "01hj6hcs664f9j350w3qmqqjnc",
+      "name": "Home Insurance",
+      "slug": "home-insurance-1",
+      "description": "Home Insurance: Protect your home and belongings. Peace of mind for unexpected events. Customizable coverage.",
+      "type": "business",
+      "model": "home-insurance"
+    }
+  ],
+  "status": 200,
+  "message": "Products retrieved successfully"
+}

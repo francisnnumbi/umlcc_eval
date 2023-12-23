@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:umlcc_eval/app/controllers/data_controller.dart';
 import 'package:umlcc_eval/app/ui/auth/me/profile_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -30,15 +31,33 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          DataController.to.loadProducts();
+        },
+        child: const Icon(Icons.refresh),
+      ),
       body: CustomScrollView(
         slivers: [
-          SliverToBoxAdapter(
-            child: Container(
-                height: 200,
-                color: Colors.red,
-                child: const Center(
-                  child: Text("Home Page"),
-                )),
+          SliverFillRemaining(
+            child: Obx(
+              () => ListView.builder(
+                itemCount: DataController.to.products.value?.length ?? 0,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    onTap: () {
+                      DataController.to.selectProduct(
+                          DataController.to.products.value![index]);
+                    },
+                    title: Text(DataController.to.products.value![index].name!),
+                    subtitle: Text(
+                      DataController.to.products.value![index].description
+                          .toString(),
+                    ),
+                  );
+                },
+              ),
+            ),
           ),
         ],
       ),
