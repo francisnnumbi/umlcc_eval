@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:umlcc_eval/app/ui/auth/login/login_page.dart';
+import 'package:umlcc_eval/app/ui/auth/me/profile_page.dart';
 import 'package:umlcc_eval/app/ui/auth/register/register_page.dart';
 
 import 'app/middlewares/auth_middleware.dart';
@@ -18,6 +19,13 @@ class Routes {
     GetPage(
       name: HomePage.route,
       page: () => const HomePage(),
+      middlewares: [
+        AuthMiddleware(priority: -1),
+      ],
+    ),
+    GetPage(
+      name: ProfilePage.route,
+      page: () => const ProfilePage(),
       middlewares: [
         AuthMiddleware(priority: -1),
       ],

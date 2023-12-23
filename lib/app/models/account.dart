@@ -31,6 +31,10 @@ class Account {
     return data;
   }
 
+  String activeToString() {
+    return active! ? 'Active' : 'Inactive';
+  }
+
   @override
   String toString() {
     return 'Account{avatar: $avatar, accountNr: $accountNr, name: $name, active: $active, type: $type}';

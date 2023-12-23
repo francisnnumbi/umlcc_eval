@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 import 'account.dart';
 
 class User {
@@ -62,6 +64,24 @@ class User {
       defaultLang: json['default_lang'].toString(),
       accounts: acc,
     );
+  }
+
+  String fullPhone() {
+    return "+${dialCode!}${phone!}";
+  }
+
+  Account? firstAccount() {
+    if (accounts!.isEmpty) {
+      return null;
+    }
+    return accounts!.first;
+  }
+
+  String lastLoginAtFormat() {
+    if (lastLoginAt == null) {
+      return '';
+    }
+    return DateFormat("d-M-y").format(DateTime.parse(lastLoginAt!).toLocal());
   }
 
   Map<String, dynamic> toJson() {
