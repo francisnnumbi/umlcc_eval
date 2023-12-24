@@ -47,7 +47,12 @@ class _ProfilePageState extends State<ProfilePage> {
                       height: 60,
                       color: Colors.blue,
                       padding: const EdgeInsets.all(1),
-                      child: const Image(image: AssetImage(Assets.imagesUser0)),
+                      child: const Hero(
+                        tag: "profileButton",
+                        child: Image(
+                          image: AssetImage(Assets.imagesUser0),
+                        ),
+                      ),
                     ),
                     const SizedBox(width: 10),
                     Expanded(

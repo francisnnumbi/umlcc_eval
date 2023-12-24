@@ -37,6 +37,8 @@ class Routes {
     GetPage(
       name: ProfilePage.route,
       page: () => const ProfilePage(),
+      transition: Transition.rightToLeft,
+      transitionDuration: const Duration(milliseconds: 500),
       middlewares: [
         SplashMiddleware(priority: -2),
         AuthMiddleware(priority: -1),
