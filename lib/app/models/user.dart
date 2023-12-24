@@ -70,6 +70,10 @@ class User {
     return "+${dialCode!}${phone!}";
   }
 
+  String fullName() {
+    return "${firstName!} ${middleName!} ${lastName!}";
+  }
+
   Account? firstAccount() {
     if (accounts!.isEmpty) {
       return null;

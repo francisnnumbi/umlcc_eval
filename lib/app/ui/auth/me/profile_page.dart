@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:umlcc_eval/app/services/auth_service.dart';
 import 'package:umlcc_eval/generated/assets.dart';
 
+import '../../../models/account.dart';
+
 class ProfilePage extends StatefulWidget {
   const ProfilePage({
     super.key,
@@ -17,9 +19,11 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey.shade200,
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: const Text("Profile Page"),
+        elevation: 1,
+        backgroundColor: Colors.grey.shade200,
+        title: Text(AuthService.to.user.value!.fullName()),
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),
@@ -31,26 +35,31 @@ class _ProfilePageState extends State<ProfilePage> {
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.all(4.0),
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
         child: CustomScrollView(
           slivers: [
             SliverToBoxAdapter(
               child: Container(
-                padding: const EdgeInsets.all(4),
-                margin: const EdgeInsets.only(top: 5),
-                color: Colors.red.shade50,
+                padding: const EdgeInsets.all(8.0),
+                margin: const EdgeInsets.only(top: 8.0),
+                decoration: BoxDecoration(
+                  color: Colors.red.shade100,
+                  borderRadius: const BorderRadius.all(Radius.circular(10)),
+                ),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
                       width: 60,
                       height: 60,
-                      color: Colors.blue,
+                      //color: Colors.blue,
                       padding: const EdgeInsets.all(1),
-                      child: const Hero(
-                        tag: "profileButton",
-                        child: Image(
-                          image: AssetImage(Assets.imagesUser0),
+                      child: const ClipOval(
+                        child: Hero(
+                          tag: "profileButton",
+                          child: Image(
+                            image: AssetImage(Assets.imagesUser0),
+                          ),
                         ),
                       ),
                     ),
@@ -113,122 +122,128 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               ),
             ),
+            const SliverToBoxAdapter(
+              child: ListTile(
+                title: Text(
+                  "Profile",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 12,
+                  ),
+                ),
+              ),
+            ),
             SliverToBoxAdapter(
               child: Container(
-                padding: const EdgeInsets.all(4),
-                margin: const EdgeInsets.only(top: 5),
-                color: Colors.green.shade50,
+                padding: const EdgeInsets.all(0),
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade300,
+                  borderRadius: const BorderRadius.all(Radius.circular(10)),
+                ),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Expanded(
-                      child: Row(
+                      child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text("Email :",
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.normal,
-                                    fontSize: 11,
-                                  )),
-                              Text("Phone : ",
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.normal,
-                                    fontSize: 11,
-                                  )),
-                              Text("Birth : ",
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.normal,
-                                    fontSize: 11,
-                                  )),
-                            ],
+                          ListTile(
+                            title: const Text("Email : ",
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 11,
+                                )),
+                            subtitle: Text(AuthService.to.user.value!.email!,
+                                style: const TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 11,
+                                )),
                           ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              Text(AuthService.to.user.value!.email!,
-                                  style: const TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 11,
-                                  )),
-                              Text(AuthService.to.user.value?.fullPhone() ?? '',
-                                  style: const TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 11,
-                                  )),
-                              Text(AuthService.to.user.value!.dob!,
-                                  style: const TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 11,
-                                  )),
-                            ],
+                          ListTile(
+                            title: const Text("Phone : ",
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 11,
+                                )),
+                            subtitle: Text(
+                                AuthService.to.user.value!.fullPhone() ?? '',
+                                style: const TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 11,
+                                )),
+                          ),
+                          ListTile(
+                            title: const Text("Birth : ",
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 11,
+                                )),
+                            subtitle: Text(AuthService.to.user.value!.dob!,
+                                style: const TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 11,
+                                )),
                           ),
                         ],
                       ),
                     ),
-                    const SizedBox(width: 10),
+                    const SizedBox(height: 10),
                     Expanded(
-                      child: Row(
+                      child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text("Type : ",
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.normal,
-                                    fontSize: 11,
-                                  )),
-                              Text("Last Login : ",
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.normal,
-                                    fontSize: 11,
-                                  )),
-                              Text("Login Count : ",
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.normal,
-                                    fontSize: 11,
-                                  )),
-                            ],
+                          ListTile(
+                            title: const Text("Type : ",
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 11,
+                                )),
+                            subtitle: Text(AuthService.to.user.value!.type!,
+                                style: const TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 11,
+                                )),
                           ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              Text(AuthService.to.user.value!.type!,
-                                  style: const TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 11,
-                                  )),
-                              Text(
-                                  AuthService.to.user.value
-                                          ?.lastLoginAtFormat() ??
-                                      '',
-                                  style: const TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 11,
-                                  )),
-                              Text(AuthService.to.user.value!.loginCount!,
-                                  style: const TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 11,
-                                  )),
-                            ],
+                          ListTile(
+                            title: const Text("Last Login : ",
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 11,
+                                )),
+                            subtitle: Text(
+                                AuthService.to.user.value!
+                                        .lastLoginAtFormat() ??
+                                    '',
+                                style: const TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 11,
+                                )),
+                          ),
+                          ListTile(
+                            title: const Text("Login Count : ",
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 11,
+                                )),
+                            subtitle:
+                                Text(AuthService.to.user.value!.loginCount!,
+                                    style: const TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 11,
+                                    )),
                           ),
                         ],
                       ),
@@ -237,116 +252,114 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               ),
             ),
-            SliverToBoxAdapter(
-              child: Container(
-                padding: const EdgeInsets.all(4),
-                margin: const EdgeInsets.only(top: 5),
-                color: Colors.blue.shade50,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text("Account :",
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.normal,
-                                    fontSize: 11,
-                                  )),
-                              Text("Name : ",
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.normal,
-                                    fontSize: 11,
-                                  )),
-                            ],
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              Text(
-                                  AuthService.to.user.value!
-                                      .firstAccount()!
-                                      .accountNr!,
-                                  style: const TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 11,
-                                  )),
-                              Text(
-                                  AuthService.to.user.value
-                                          ?.firstAccount()!
-                                          .name ??
-                                      '',
-                                  style: const TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 11,
-                                  )),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(width: 10),
-                    Expanded(
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text("Type : ",
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.normal,
-                                    fontSize: 11,
-                                  )),
-                              Text("Active : ",
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.normal,
-                                    fontSize: 11,
-                                  )),
-                            ],
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              Text(
-                                  AuthService.to.user.value!
-                                      .firstAccount()!
-                                      .type!,
-                                  style: const TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 11,
-                                  )),
-                              Text(
-                                  AuthService.to.user.value
-                                          ?.firstAccount()!
-                                          .activeToString() ??
-                                      '',
-                                  style: const TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 11,
-                                  )),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+            const SliverToBoxAdapter(
+              child: ListTile(
+                title: Text(
+                  "Accounts",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 12,
+                  ),
                 ),
               ),
+            ),
+            SliverFillRemaining(
+              child: ListView.builder(
+                  itemCount: AuthService.to.user.value!.accounts!.length,
+                  itemBuilder: (context, index) {
+                    final Account account =
+                        AuthService.to.user.value!.accounts![index];
+                    return Container(
+                      padding: const EdgeInsets.all(4),
+                      decoration: BoxDecoration(
+                        color: Colors.green.shade100,
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(10)),
+                      ),
+                      child: Column(
+                        children: [
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    ListTile(
+                                      title: const Text("Account : ",
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.normal,
+                                            fontSize: 11,
+                                          )),
+                                      subtitle: Text(account.accountNr!,
+                                          style: const TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 11,
+                                          )),
+                                    ),
+                                    ListTile(
+                                      title: const Text("Name : ",
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.normal,
+                                            fontSize: 11,
+                                          )),
+                                      subtitle: Text(account.name ?? '',
+                                          style: const TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 11,
+                                          )),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    ListTile(
+                                      title: const Text("Type : ",
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.normal,
+                                            fontSize: 11,
+                                          )),
+                                      subtitle: Text(account.type!,
+                                          style: const TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 11,
+                                          )),
+                                    ),
+                                    ListTile(
+                                      title: const Text("Active : ",
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.normal,
+                                            fontSize: 11,
+                                          )),
+                                      subtitle:
+                                          Text(account.activeToString() ?? '',
+                                              style: const TextStyle(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 11,
+                                              )),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    );
+                  }),
             ),
           ],
         ),
