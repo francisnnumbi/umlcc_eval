@@ -137,7 +137,7 @@ class _ProfilePageState extends State<ProfilePage> {
               child: Container(
                 padding: const EdgeInsets.all(0),
                 decoration: BoxDecoration(
-                  color: Colors.grey.shade300,
+                  color: Colors.blue.shade50,
                   borderRadius: const BorderRadius.all(Radius.circular(10)),
                 ),
                 child: Row(
