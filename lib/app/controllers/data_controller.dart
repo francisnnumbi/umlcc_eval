@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:umlcc_eval/app/models/product.dart';
 import 'package:umlcc_eval/app/services/auth_service.dart';
@@ -17,8 +18,8 @@ class DataController extends GetxController {
   final Rxn<List<Product>> products = Rxn<List<Product>>();
   final Rxn<Product> product = Rxn<Product>();
 
-  selectProduct(Product p0) {
-    product.value = p0;
+  selectProduct(Product product) {
+    this.product.value = product;
     Get.toNamed(DetailPage.route);
   }
 
@@ -27,17 +28,21 @@ class DataController extends GetxController {
       if (response.statusCode == 200) {
         final data = response.data;
         products.value = Product.listFromJson(data['data']);
+      } else {
+        if (kDebugMode) {
+          printError(info: "LOAD PRODUCTS :: ${response.statusCode}");
+        }
       }
     }).onError((error, stackTrace) {
-      printError(info: "LOAD PRODUCTS :: $error");
+      if (kDebugMode) printError(info: "LOAD PRODUCTS :: $error");
     });
   }
 
   @override
   void onReady() {
     super.onReady();
-    AuthService.to.user.listen((p0) {
-      if (p0 != null) {
+    AuthService.to.user.listen((user) {
+      if (user != null) {
         loadProducts();
       }
     });
