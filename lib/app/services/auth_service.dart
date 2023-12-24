@@ -21,7 +21,6 @@ class AuthService extends GetxService {
 
   final Rxn<User> user = Rxn<User>();
 
-  //final x_did = ''.obs;
   final _loggedIn = false.obs;
 
   bool get isLogged => _loggedIn.value;
@@ -29,20 +28,15 @@ class AuthService extends GetxService {
   String get otp => InnerStorage.read(kOtp).toString();
 
   register(Map<String, dynamic> datum) async {
-    datum['type'] = 'individual';
+    datum[kType] = 'individual';
     datum[kIdentity] = InnerStorage.read(kIdentity).toString();
     ApiProvider.api.register(datum).then((response) {
       if (response.statusCode == 201) {
         final data = response.data;
         InnerStorage.write(kOtp, data[kOtp].toString());
-
         InnerStorage.write(kIdentity, datum[kIdentity].toString());
         InnerStorage.write(kPhone, datum[kPhone].toString());
         InnerStorage.write(kDialCode, datum[kDialCode].toString());
-
-        // user.value = User.fromJson(datum);
-
-        printInfo(info: data.toString());
 
         verify({
           "phone": datum[kPhone].toString(),
@@ -51,7 +45,7 @@ class AuthService extends GetxService {
         });
       }
     }).onError((error, stackTrace) {
-      printError(info: error.toString());
+      if (kDebugMode) printError(info: error.toString());
     });
   }
 
@@ -61,7 +55,6 @@ class AuthService extends GetxService {
       if (response.statusCode == 200) {
         final data = response.data;
         InnerStorage.write(kOtp, data[kOtp]);
-
         await InnerStorage.write(kIdentity, datum[kIdentity].toString());
         await InnerStorage.write(kPhone, datum[kPhone].toString());
         await InnerStorage.write(kDialCode, datum[kDialCode].toString());
@@ -73,19 +66,18 @@ class AuthService extends GetxService {
         });
       }
     }).onError((error, stackTrace) {
-      printError(info: error.toString());
+      if (kDebugMode) printError(info: error.toString());
     });
   }
 
   verify(Map<String, dynamic> datum) async {
-    datum['fcm_token'] = InnerStorage.read(kFCMToken).toString();
+    datum[kFCMToken] = InnerStorage.read(kFCMToken).toString();
 
     ApiProvider.api.verify(datum).then((response) {
       if (response.statusCode == 200) {
         final data = response.data;
-        InnerStorage.write(kAccessToken, data[kAccessToken]);
-        InnerStorage.write(kTokenType, data[kTokenType]);
-
+        InnerStorage.write(kAccessToken, data[kAccessToken].toString());
+        InnerStorage.write(kTokenType, data[kTokenType].toString());
         InnerStorage.write(kIdentity, datum[kIdentity].toString());
         InnerStorage.write(kPhone, datum[kPhone].toString());
 
@@ -112,7 +104,7 @@ class AuthService extends GetxService {
       }
     }).onError((error, stackTrace) {
       _loggedIn.value = false;
-      printError(info: error.toString());
+      if (kDebugMode) printError(info: error.toString());
     });
   }
 
@@ -124,7 +116,6 @@ class AuthService extends GetxService {
     if (!InnerStorage.hasData(kPhone) || !InnerStorage.hasData(kDialCode)) {
       if (kDebugMode) print('silent login failed');
       return;
-      //Get.offNamed(LoginPage.route);
     } else {
       if (kDebugMode) print('silent login');
       login({
