@@ -6,30 +6,41 @@ A flutter project for evaluation
 
 Creating an application with the following points :
 
-- [X]  A login page
-- [X]  A registration page
-- [X]  A verification page
-- [X]  A home page with a list of products
+- [X]  A login mechanism
+- [X]  A registration mechanism
+- [X]  A verification mechanism
+- [X]  A home page with a list of products [ and a product details page, if necessary]
 - [X]  A me or profile page
 
 ## Endpoints
 
-These are stated in the app's `lib/api/endpoints.dart` file.
+These are stated in the app's `lib/api/endpoints.dart` file. But they can also be found under each request section
+above.
 
 ## Particularities of Requests
 
-Cookie should be sent inside the header of the request with the key `X-DID` and the `Authorization` with
-value `Bearer $token`
-where `$token`
-is the token received after a successful login.
+Cookie should be sent inside the header of the request. `X-DID` takes the value of `identity` and the `Authorization`
+takes the value of `Bearer $token` where `$token` is the `access_token` received after a successful verify.
 
 ### Register Post Request :
+
+End point : `https://umlcc.chd-staging.tech/api/app/auth/register`
 
 These go in the body of the request:
 
 `dial_code`, `first_name`, `last_name`, `identity`, `phone`, `type="individual"`
 
+### Login Post Request :
+
+End point : `https://umlcc.chd-staging.tech/api/app/auth/login`
+
+These go in the body of the request:
+
+`dial_code`, `phone`, `identity`
+
 ### Verify Post Request :
+
+End point : `https://umlcc.chd-staging.tech/api/app/auth/verify`
 
 these go in the body of the request:
 
@@ -39,13 +50,9 @@ these go in the body of the request:
 
 `):` At this point, user should be verified and logged in order to perform the next requests.
 
-### Login Post Request :
-
-These go in the body of the request:
-
-`dial_code`, `phone`, `identity`
-
 ### Me Get Request :
+
+End point : `https://umlcc.chd-staging.tech/api/app/account/me`
 
 These go in the header of the request:
 
@@ -53,80 +60,81 @@ These go in the header of the request:
 
 ### Products Get Request :
 
+End point : `https://umlcc.chd-staging.tech/api/app/products`
+
 These go in the header of the request:
 
 `X-DID`, `Authorization:'Bearer $token'`, `Accept:'application/json'`
 
 ## Points to Clarify
 
-- [X]  The `identity` field is the email address of the user.
+Terms
+
+- [X]  The `identity` field is the device unique ID to be sent in the body of the request.
+  But when this ID is sent in the headers, it is referred to as `X-DID`.
 - [X]  The `dial_code` field is the country code of the user.
 - [X]  The `phone` field is the phone number of the user.
-- [X]  The `code` field is the verification code sent to the user's phone number, or `otp`.
-- [X]  The `type` field is the type of user. It can be either `individual` or `company`.
-- [X]  The `token` field is the token received after a successful login.
-- [X]  The `X-DID` field is the device identity to be sent with the request.
+- [X]  The `code` field is the verification code received in the response of register and login requests.
+  When received, it is named `otp`.
+- [X]  The `type` field is the type of user. It can be either `individual` or `business`.
+- [X]  The `token` field is the token received after a successful verify request. When received, it is
+  named `access_token`.
+- [x]  The `token_type` is the type of token received after successful verify request.
+  This is usually concatenated with the token when sent in the headers as `Authirization` value.
+- [X]  The `X-DID` field is the device unique ID to be sent in the headers. This is the same as `identity` mentioned
+  above.
 - [X]  The `Accept` field is the header sent with the request stating the type of data that is expected to be received.
-- [X]  The `Authorization` field is the header sent with the request.
+- [X]  The `Authorization` field is the header sent with the request. It takes as value the token received after
+  successful verify request.
 - [X]  The `Bearer`is the type of authorization attached as value of `Authorization` and is concatenated with
-  the `token`.
-- [X]  The `fcm_token` is the firebase token. This means that the app should authenticate with firebase.
-- [X]  The `me` endpoint returns a `200` status code if the user is logged in and a `401` status code if the user is not
-  logged in.
+  the `token`. This is received as `token_type` in the response of the successful verify request.
+- [X]  The `fcm_token` is the Firebase Cloud Messaging token. This means that the app should connect with firebase to
+  receive the token.
+
+End points
+
 - [X]  The `register` endpoint returns a `201` status code if the user is successfully registered and a `400` status
-  code
-  if the user is not successfully registered.
+  code if the user is not successfully registered. This returns the `otp` that will be needed for verification.
 - [X]  The `login` endpoint returns a `200` status code if the user is successfully logged in and a `400` status code if
-  the user is not successfully logged in.
+  the user is not successfully logged in. This returns the `otp` that will be needed for verification.
 - [X]  The `verify` endpoint returns a `200` status code if the user is successfully verified and a `400` status code if
-  the user is not successfully verified.
-- [X]  The `products` endpoint returns a `200` status code if the user is successfully logged in and a `401` status code
-  if the user is not successfully logged in.
+  the user is not successfully verified. After sending `register` and `login` requests, `verify` request will be sent
+  immediately after to confirm the login status.
+- [X]  The `me` endpoint returns the information of the logged-in user.
+- [X]  The `products` endpoint returns a list of products only when user is connected.
 
 ## Points to remember
 
 - [X]  The cookie should be sent in the header.
+- [x]  `X-DID` and `identity` are one and the same thing. `X-DID` is used as header, and `identity` as entry in the body
+  of the request. Both should carry the same value.
 
-## Encountered Problems
+## How it works behind
 
-#### Register
-
-- [ ]  The `X-AU30` cookie was received with the response, but is not related to any expected cookie. [SOLVED]
-- [ ]  The `ensurance_session` cookie was received with the response, but is not related to any expected
-  cookie. [SOLVED]
-- [X]  The `X-DID` was not received with the response. [SOLVED]
-- [X]  The `token` was not received with the response. [SOLVED]
-
-#### Verify
-
-- [ ]  The `fcm_token` field is required, but was not received with the previous response. [SOLVED]
-- [ ]  The `ensurance_session` cookie was received with the response, but is not related to any expected
-  cookie. [SOLVED]
-- [X]  `422 Unprocessable Entity` status code was received with the Exception, thrown
-  by `RequestOptions.validateStatus`, `Client error - the request contains bad syntax or cannot be fulfilled`. [SOLVED]
-
-#### Login
-
-- [ ]  The `ensurance_session` cookie was received with the response, but is not related to any expected
-  cookie. [SOLVED]
-- [X]  `403 Forbidden` status code was received with the Exception, thrown by `RequestOptions.validateStatus`. [SOLVED]
-
-#### Me
-
-- [X]  `401 Unauthorized` status code was received with the Exception, thrown
-  by `RequestOptions.validateStatus`. [SOLVED]
-
-#### Products
-
-- [X]  `401 Unauthorized` status code was received with the Exception, thrown
-  by `RequestOptions.validateStatus`. [SOLVED]
-
-It seems that some terms are named differently in the task and in the code. And that some terms are missing in the task.
-It's also possible that some instructions are missing in the task too.
+- [x] The app is linked to Firebase Cloud Messaging project to retrieve the `fcm_token`, which is stored locally.
+- [x] The app retrieves the device unique ID, `identity`, which is stored locally.
+- [x] At load time, the app tries to retrieve saved `phone`, `dial_code` and `identity` from local storage.
+- [x] If these are not found, the app displays the login page.
+- [x] If these are found, the app sends a silent `login` request to the server.
+- [x] If the `login` request is successful, the app sends a `verify` request to the server.
+- [x] If the `verify` request is successful, the app sends a `me` request to the server.
+- [x] If the `verify` request is not successful, the app displays the login page.
+- [x] If the user has no account yet, he can go to the registration page and initiate registration.
+- [x] If the `register` request is successful, the app sends a `verify` request to the server.
+- [x] If the user has an account, he can go to the login page and initiate login.
+- [x] If the `login` request is successful, the app sends a `verify` request to the server.
+- [x] If the `verify` request is successful, the app sends a `me` request to the server.
+- [x] If the `me` request is successful, the app displays the home page.
+- [x] If the `me` request is not successful, the app displays the login page.
+- [x] If the user is logged in, the app displays the home page.
+- [x] If the user is not logged in, the app displays the login page.
+- [x] If the user is logged in, he can go to the profile page to see his information.
+- [x] If the user is logged in, he can go to the home page to see the list of products.
+- [x] If the user is logged in, he can go to the details page of a product to see the details of the product.
+- [x] From the profile page, the user can log out and be redirected to `login` page.
 
 ## Libraries Used
 
-- [x] [Firebase Messaging]
 - [x] [Device Info Plus](https://pub.dev/packages/device_info_plus) : A powerful device information library for Dart,
   which supports getting device information.
 - [X]  [Dio](https://pub.dev/packages/dio) : A powerful Http client for Dart, which supports Interceptors, FormData,
@@ -139,3 +147,9 @@ It's also possible that some instructions are missing in the task too.
   Injection, Routing and a lot more.
 - [X]  [GetStorage](https://pub.dev/packages/get_storage) : A powerful storage library for Dart, which supports
   persistent storage.
+- [x]  [intl](https://pub.dev/packages/intl) : Provides internationalization and localization facilities, including
+  message translation, plurals and genders, date/number formatting and parsing, and bidirectional text.
+- [x]  [Firebase Core](https://pub.dev/packages/firebase_core) : A Flutter plugin to use the Firebase Core API, which
+  enables connecting to multiple Firebase apps.
+- [x]  [Firebase Messaging](https://pub.dev/packages/firebase_messaging): A Flutter plugin to use the Firebase Cloud
+  Messaging API.
