@@ -22,7 +22,7 @@ class HomePage extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {
-              DataController.to.loadProducts();
+              DataController.to.loadProducts(notify: true);
             },
             icon: const Icon(Icons.refresh),
           ),

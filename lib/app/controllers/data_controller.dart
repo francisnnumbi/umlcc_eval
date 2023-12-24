@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:umlcc_eval/app/models/product.dart';
 import 'package:umlcc_eval/app/services/auth_service.dart';
@@ -23,17 +24,44 @@ class DataController extends GetxController {
     Get.toNamed(DetailPage.route);
   }
 
-  Future<void> loadProducts() async {
+  Future<void> loadProducts({bool? notify = false}) async {
     ApiProvider.api.products().then((response) {
       if (response.statusCode == 200) {
         final data = response.data;
         products.value = Product.listFromJson(data['data']);
+        if (notify == true) {
+          Get.snackbar(
+            "Data Loaded",
+            data['message'].toString(),
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.green.shade900,
+            colorText: Colors.white,
+          );
+        }
       } else {
+        if (notify == true) {
+          Get.snackbar(
+            "Data Load Failed",
+            response.data['message'].toString(),
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.orange.shade900,
+            colorText: Colors.white,
+          );
+        }
         if (kDebugMode) {
           printError(info: "LOAD PRODUCTS :: ${response.statusCode}");
         }
       }
     }).onError((error, stackTrace) {
+      if (notify == true) {
+        Get.snackbar(
+          "Connection Failed",
+          error.toString(),
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red.shade900,
+          colorText: Colors.white,
+        );
+      }
       if (kDebugMode) printError(info: "LOAD PRODUCTS :: $error");
     });
   }

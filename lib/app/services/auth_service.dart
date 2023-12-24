@@ -88,7 +88,7 @@ class AuthService extends GetxService {
           "Verification successful",
           data['message'],
           snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.green.shade400,
+          backgroundColor: Colors.green.shade900,
           colorText: Colors.white,
         );
         Get.offNamed(HomePage.route);
@@ -98,12 +98,19 @@ class AuthService extends GetxService {
           "Verification failed",
           response.data['message'],
           snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.red.shade400,
+          backgroundColor: Colors.orange.shade900,
           colorText: Colors.white,
         );
       }
     }).onError((error, stackTrace) {
       _loggedIn.value = false;
+      Get.snackbar(
+        "Connection failed",
+        error.toString(),
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red.shade900,
+        colorText: Colors.white,
+      );
       if (kDebugMode) printError(info: error.toString());
     });
   }
