@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:umlcc_eval/app/services/auth_service.dart';
 import 'package:umlcc_eval/generated/assets.dart';
 
-import '../../../models/account.dart';
-
 class ProfilePage extends StatefulWidget {
   const ProfilePage({
     super.key,
@@ -178,7 +176,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 )),
                           ),
                           ListTile(
-                            title: const Text("Birth : ",
+                            title: const Text("Birth Date : ",
                                 style: TextStyle(
                                   color: Colors.black,
                                   fontWeight: FontWeight.normal,
@@ -264,102 +262,97 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               ),
             ),
-            SliverFillRemaining(
-              child: ListView.builder(
-                  itemCount: AuthService.to.user.value!.accounts!.length,
-                  itemBuilder: (context, index) {
-                    final Account account =
-                        AuthService.to.user.value!.accounts![index];
-                    return Container(
-                      padding: const EdgeInsets.all(4),
-                      decoration: BoxDecoration(
-                        color: Colors.green.shade100,
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(10)),
-                      ),
-                      child: Column(
+            SliverList.list(
+              children: AuthService.to.user.value!.accounts!.map((account) {
+                return Container(
+                  margin: const EdgeInsets.only(bottom: 4.0),
+                  padding: const EdgeInsets.all(4),
+                  decoration: BoxDecoration(
+                    color: Colors.green.shade100,
+                    borderRadius: const BorderRadius.all(Radius.circular(10)),
+                  ),
+                  child: Column(
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    ListTile(
-                                      title: const Text("Account : ",
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.normal,
-                                            fontSize: 11,
-                                          )),
-                                      subtitle: Text(account.accountNr!,
-                                          style: const TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 11,
-                                          )),
-                                    ),
-                                    ListTile(
-                                      title: const Text("Name : ",
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.normal,
-                                            fontSize: 11,
-                                          )),
-                                      subtitle: Text(account.name ?? '',
-                                          style: const TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 11,
-                                          )),
-                                    ),
-                                  ],
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                ListTile(
+                                  title: const Text("Account : ",
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.normal,
+                                        fontSize: 11,
+                                      )),
+                                  subtitle: Text(account.accountNr!,
+                                      style: const TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 11,
+                                      )),
                                 ),
-                              ),
-                              const SizedBox(height: 10),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    ListTile(
-                                      title: const Text("Type : ",
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.normal,
-                                            fontSize: 11,
-                                          )),
-                                      subtitle: Text(account.type!,
-                                          style: const TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 11,
-                                          )),
-                                    ),
-                                    ListTile(
-                                      title: const Text("Active : ",
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.normal,
-                                            fontSize: 11,
-                                          )),
-                                      subtitle:
-                                          Text(account.activeToString() ?? '',
-                                              style: const TextStyle(
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 11,
-                                              )),
-                                    ),
-                                  ],
+                                ListTile(
+                                  title: const Text("Name : ",
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.normal,
+                                        fontSize: 11,
+                                      )),
+                                  subtitle: Text(account.name ?? '',
+                                      style: const TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 11,
+                                      )),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                ListTile(
+                                  title: const Text("Type : ",
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.normal,
+                                        fontSize: 11,
+                                      )),
+                                  subtitle: Text(account.type!,
+                                      style: const TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 11,
+                                      )),
+                                ),
+                                ListTile(
+                                  title: const Text("Status : ",
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.normal,
+                                        fontSize: 11,
+                                      )),
+                                  subtitle: Text(account.activeToString() ?? '',
+                                      style: const TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 11,
+                                      )),
+                                ),
+                              ],
+                            ),
                           ),
                         ],
                       ),
-                    );
-                  }),
+                    ],
+                  ),
+                );
+              }).toList(),
             ),
           ],
         ),

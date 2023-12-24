@@ -13,12 +13,15 @@ class Account {
     this.type,
   });
 
-  Account.fromJson(Map<String, dynamic> json) {
-    avatar = json['avatar'].toString();
-    accountNr = json['account_nr'].toString();
-    name = json['name'].toString();
-    active = json['active'];
-    type = json['type'].toString();
+  factory Account.fromJson(Map<String, dynamic> json) {
+    return Account(
+      avatar: json['avatar'] != null ? json['avatar'].toString() : "",
+      accountNr:
+          json['account_nr'] != null ? json['account_nr'].toString() : "",
+      name: json['name'] != null ? json['name'].toString() : "",
+      active: json['active'] ?? false,
+      type: json['type'] != null ? json['type'].toString() : "",
+    );
   }
 
   Map<String, dynamic> toJson() {

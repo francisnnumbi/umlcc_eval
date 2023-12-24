@@ -46,22 +46,29 @@ class User {
         acc.add(Account.fromJson(v));
       });
     }
+
     return User(
-      avatar: json['avatar'].toString(),
-      accountNr: json['account_nr'].toString(),
-      firstName: json['first_name'].toString(),
-      middleName: json['middle_name'].toString(),
-      lastName: json['last_name'].toString(),
-      email: json['email'].toString(),
-      dialCode: json['dial_code'].toString(),
-      iso2: json['iso2'].toString(),
-      iso3: json['iso3'].toString(),
-      phone: json['phone'].toString(),
-      dob: json['dob'].toString(),
-      type: json['type'].toString(),
-      lastLoginAt: json['last_login_at'].toString(),
-      loginCount: json['login_count'].toString(),
-      defaultLang: json['default_lang'].toString(),
+      avatar: json['avatar'] != null ? json['avatar'].toString() : "",
+      accountNr:
+          json['account_tr'] != null ? json['account_nr'].toString() : "",
+      firstName:
+          json['first_name'] != null ? json['first_name'].toString() : "",
+      middleName:
+          json['middle_name'] != null ? json['middle_name'].toString() : "",
+      lastName: json['last_name'] != null ? json['last_name'].toString() : "",
+      email: json['email'] != null ? json['email'].toString() : "",
+      dialCode: json['dial_code'] != null ? json['dial_code'].toString() : "",
+      iso2: json['iso2'] != null ? json['iso2'].toString() : "",
+      iso3: json['iso3'] != null ? json['iso3'].toString() : "",
+      phone: json['phone'] != null ? json['phone'].toString() : "",
+      dob: json['dob'] != null ? json['dob'].toString() : "",
+      type: json['type'] != null ? json['type'].toString() : "",
+      lastLoginAt:
+          json['last_login_at'] != null ? json['last_login_at'].toString() : "",
+      loginCount:
+          json['login_count'] != null ? json['login_count'].toString() : "",
+      defaultLang:
+          json['default_lang'] != null ? json['default_lang'].toString() : "",
       accounts: acc,
     );
   }
