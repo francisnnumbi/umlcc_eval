@@ -16,12 +16,13 @@ class Product {
   });
 
   Product.fromJson(Map<String, dynamic> json) {
-    id = json['id'].toString();
-    name = json['name'].toString();
-    slug = json['slug'].toString();
-    description = json['description'].toString();
-    type = json['type'].toString();
-    model = json['model'].toString();
+    id = json['id'] != null ? json['id'].toString() : "";
+    name = json['name'] != null ? json['name'].toString() : "";
+    slug = json['slug'] != null ? json['slug'].toString() : "";
+    description =
+        json['description'] != null ? json['description'].toString() : "";
+    type = json['type'] != null ? json['type'].toString() : "";
+    model = json['model'] != null ? json['model'].toString() : "";
   }
 
   Map<String, dynamic> toJson() {

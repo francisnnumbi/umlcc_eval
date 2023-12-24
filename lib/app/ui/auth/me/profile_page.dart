@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:umlcc_eval/app/services/auth_service.dart';
+import 'package:umlcc_eval/configs/constants.dart';
 import 'package:umlcc_eval/generated/assets.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -17,10 +18,10 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade200,
+      backgroundColor: kBackgroundColor,
       appBar: AppBar(
         elevation: 1,
-        backgroundColor: Colors.grey.shade200,
+        backgroundColor: kBackgroundColor,
         title: Text(AuthService.to.user.value!.fullName()),
         actions: [
           IconButton(
