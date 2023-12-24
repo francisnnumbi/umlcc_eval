@@ -22,14 +22,16 @@ final GetStorage InnerStorage = GetStorage(kAppName);
 
 _retrieveDeviceInfo() async {
   final devInfo = await deviceInfoPlugin.deviceInfo;
-  // if (kDebugMode) print(devInfo.data.toString());
-  InnerStorage.write(kIdentity, devInfo.data['id'].toString());
+  if (!InnerStorage.hasData(kIdentity) ||
+      InnerStorage.read(kIdentity) != devInfo.data['id'].toString()) {
+    InnerStorage.write(kIdentity, devInfo.data['id'].toString());
+  }
 }
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   DIO.interceptors.add(CookieManager(CookieJar()));
-  
+
   await GetStorage.init(kAppName);
   await _retrieveDeviceInfo();
   await Firebase.initializeApp(

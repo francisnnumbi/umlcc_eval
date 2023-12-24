@@ -10,7 +10,6 @@ Future<void> handleBackgroundMessage(RemoteMessage message) async {
     print("message body: ${message.notification!.body}");
     print("message payload: ${message.data}");
   }
-  // InnerStorage.write(kFCMToken, message.data['token']);
 }
 
 class FirebaseApi {
@@ -19,11 +18,12 @@ class FirebaseApi {
   Future<void> initNotifications() async {
     await _firebaseMessaging.requestPermission();
     final fcmToken = await _firebaseMessaging.getToken();
-    if (kDebugMode) {
-      print("FCMToken: $fcmToken");
-    }
-    InnerStorage.write(kFCMToken, fcmToken);
 
-    FirebaseMessaging.onBackgroundMessage(handleBackgroundMessage);
+    if (!InnerStorage.hasData(kFCMToken) ||
+        InnerStorage.read(kFCMToken) != fcmToken) {
+      InnerStorage.write(kFCMToken, fcmToken);
+    }
+
+    //FirebaseMessaging.onBackgroundMessage(handleBackgroundMessage);
   }
 }
