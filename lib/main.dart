@@ -12,6 +12,7 @@ import 'package:umlcc_eval/app/ui/splash/splash_page.dart';
 import 'package:umlcc_eval/configs/constants.dart';
 import 'package:umlcc_eval/routes.dart';
 
+import 'api/api.dart';
 import 'api/firebase_api.dart';
 import 'app/services/auth_service.dart';
 import 'firebase_options.dart';
@@ -43,12 +44,11 @@ Future<void> main() async {
 }
 
 Future<void> _initServices() async {
-  await AuthService.init();
-  await DataController.init();
+  await AuthService.init(ApiProvider(DIO));
 }
 
 Future<void> _initControllers() async {
-  await DataController.init();
+  await DataController.init(ApiProvider(DIO));
 }
 
 class MyApp extends StatelessWidget {

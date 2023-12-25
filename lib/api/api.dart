@@ -4,24 +4,26 @@ import 'package:umlcc_eval/configs/constants.dart';
 import 'package:umlcc_eval/main.dart';
 
 class ApiProvider {
-  static final ApiProvider api = ApiProvider();
+  final Dio dio;
+
+  ApiProvider(this.dio);
 
   // Register
-  Future<Response> register(Map<String, dynamic> data) => DIO.post(
+  Future<Response> register(Map<String, dynamic> data) => dio.post(
         EndPoint.registerUrl,
         queryParameters: data,
         options: Options(headers: EndPoint.headers()),
       );
 
   // Login
-  Future<Response> login(Map<String, dynamic> data) => DIO.post(
+  Future<Response> login(Map<String, dynamic> data) => dio.post(
         EndPoint.loginUrl,
         queryParameters: data,
         options: Options(headers: EndPoint.headers()),
       );
 
   // Verify
-  Future<Response> verify(Map<String, dynamic> data) => DIO.post(
+  Future<Response> verify(Map<String, dynamic> data) => dio.post(
         EndPoint.verifyUrl,
         queryParameters: data,
         options: Options(
@@ -32,7 +34,7 @@ class ApiProvider {
       );
 
 // Me
-  Future<Response> me() => DIO.get(
+  Future<Response> me() => dio.get(
         EndPoint.meUrl,
         options: Options(
           headers: EndPoint.headers(
@@ -44,7 +46,7 @@ class ApiProvider {
       );
 
   // Products
-  Future<Response> products() => DIO.get(
+  Future<Response> products() => dio.get(
         EndPoint.productsUrl,
         options: Options(
           headers: EndPoint.headers(

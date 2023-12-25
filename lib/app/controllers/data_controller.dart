@@ -6,13 +6,19 @@ import 'package:umlcc_eval/app/services/auth_service.dart';
 import 'package:umlcc_eval/app/ui/details/detail_page.dart';
 
 import '../../api/api.dart';
+import '../../main.dart';
 
 class DataController extends GetxController {
+  final ApiProvider api;
+
+  DataController(this.api);
+
   // ------- static methods ------- //
   static DataController get to => Get.find();
 
-  static Future<void> init() async {
-    await Get.putAsync<DataController>(() async => DataController());
+  static Future<void> init(ApiProvider apiProvider) async {
+    await Get.putAsync<DataController>(
+            () async => DataController(apiProvider));
   }
 
 // ------- ./static methods ------- //
@@ -25,7 +31,7 @@ class DataController extends GetxController {
   }
 
   Future<void> loadProducts({bool? notify = false}) async {
-    ApiProvider.api.products().then((response) {
+    api.products().then((response) {
       if (response.statusCode == 200) {
         final data = response.data;
         products.value = Product.listFromJson(data['data']);

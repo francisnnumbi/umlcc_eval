@@ -10,11 +10,15 @@ import '../../configs/constants.dart';
 import '../models/user.dart';
 
 class AuthService extends GetxService {
+  final ApiProvider api;
+
+  AuthService(this.api);
+
   // ------- static methods ------- //
   static AuthService get to => Get.find();
 
-  static Future<void> init() async {
-    await Get.putAsync<AuthService>(() async => AuthService());
+  static Future<void> init(ApiProvider apiProvider) async {
+    await Get.putAsync<AuthService>(() async => AuthService(apiProvider));
   }
 
 // ------- ./static methods ------- //
@@ -30,7 +34,7 @@ class AuthService extends GetxService {
   register(Map<String, dynamic> datum) async {
     datum[kType] = 'individual';
     datum[kIdentity] = InnerStorage.read(kIdentity).toString();
-    ApiProvider.api.register(datum).then((response) {
+    api.register(datum).then((response) {
       if (response.statusCode == 201) {
         final data = response.data;
         InnerStorage.write(kOtp, data[kOtp].toString());
@@ -51,7 +55,7 @@ class AuthService extends GetxService {
 
   login(Map<String, dynamic> datum) async {
     datum[kIdentity] = InnerStorage.read(kIdentity).toString();
-    ApiProvider.api.login(datum).then((response) async {
+    api.login(datum).then((response) async {
       if (response.statusCode == 200) {
         final data = response.data;
         InnerStorage.write(kOtp, data[kOtp]);
@@ -73,7 +77,7 @@ class AuthService extends GetxService {
   verify(Map<String, dynamic> datum) async {
     datum[kFCMToken] = InnerStorage.read(kFCMToken).toString();
 
-    ApiProvider.api.verify(datum).then((response) {
+    api.verify(datum).then((response) {
       if (response.statusCode == 200) {
         final data = response.data;
         InnerStorage.write(kAccessToken, data[kAccessToken].toString());
@@ -142,7 +146,7 @@ class AuthService extends GetxService {
   }
 
   Future<void> loadUserData() async {
-    ApiProvider.api.me().then((response) {
+    api.me().then((response) {
       try {
         user.value = User.fromJson(response.data['data']);
       } catch (_) {
